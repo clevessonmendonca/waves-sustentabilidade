@@ -11,3 +11,21 @@ datasource db {
 }
 
 
+model Category {
+  id String @id @default(uuid())
+  name String
+  description String
+  products Product[]
+}
+
+model Product {
+  id String @id @default(uuid())
+  name String
+  description String
+  price Decimal @db.Decimal(8, 2)
+  quantity Int
+  status String
+  image String
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+}
