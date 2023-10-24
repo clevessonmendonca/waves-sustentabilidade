@@ -31,7 +31,7 @@ export const Header = () => {
   };
 
   return (
-    <Card className="flex items-center justify-between gap-3 p-[1.875rem]">
+    <Card className="flex items-center justify-between gap-3 border-none bg-transparent p-[1.875rem] shadow-none">
       <Link href={"/"}>
         <Image
           src={"/logo.png"}

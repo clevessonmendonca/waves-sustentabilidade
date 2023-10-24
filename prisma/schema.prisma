@@ -10,26 +10,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Category {
   id String @id @default(uuid())
   name String
-  description String
+  slug String
+  imageUrl String
   products Product[]
 }
 
 model Product {
   id String @id @default(uuid())
   name String
+  slug String
   description String
-  price Decimal @db.Decimal(8, 2)
-  quantity Int
-  status String
-  image String
-  category Category @relation(fields: [categoryId], references: [id])
+  basePrice Decimal @db.Decimal(8, 2)
+  imageUrls String[]
   categoryId String
+  category Category @relation(fields: [categoryId], references: [id])
+  discountPercentage Int @default(0)
 }
-
 
 model Account {
   id                 String  @id @default(cuid())
@@ -66,6 +65,9 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+
+    recyclers Recycler[]
+  collectors Collector[]
 }
 
 model VerificationToken {
@@ -74,4 +76,37 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Recycler {
+  id String @id @default(uuid())
+  name String
+  organization String
+  phone String
+  cpfCnpj String
+  cep String
+  isoCertification Boolean
+  marketTime String
+  recyclingServiceDescription String
+  kgRecycled Int
+  socialDonations Boolean
+  donationDetails String?
+
+  userId String
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Collector {
+  id String @id @default(uuid())
+  name String
+  organization String
+  phone String
+  cpfCnpj String
+  isoCertification Boolean
+  marketTime String
+  collectionServiceDescription String
+  kgCollected Int
+
+  userId String
+  user User @relation(fields: [userId], references: [id])
 }
