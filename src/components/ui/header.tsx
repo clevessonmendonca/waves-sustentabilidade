@@ -23,7 +23,7 @@ export const Header = () => {
   }, [router, status]);
 
   const handleLoginClick = async () => {
-    await signIn("google", { callbackUrl: "/dashboard" });
+    await signIn("google", { callbackUrl: "/signin", });
   };
 
   const handleLogoutClick = async () => {
