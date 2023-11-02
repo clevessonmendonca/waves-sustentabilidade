@@ -23,7 +23,7 @@ export const Header = () => {
   }, [router, status]);
 
   const handleLoginClick = async () => {
-    await signIn("google", { callbackUrl: "/signin", });
+    await signIn("google", { callbackUrl: "/signin" });
   };
 
   const handleLogoutClick = async () => {
@@ -31,7 +31,7 @@ export const Header = () => {
   };
 
   return (
-    <Card className="flex items-center justify-between gap-3 border-none bg-transparent p-[1.875rem] shadow-none">
+    <Card className="mx-auto flex w-full max-w-screen-xl items-center justify-between gap-3 border-none bg-transparent p-[1.875rem] shadow-none">
       <Link href={"/"}>
         <Image
           src={"/logo.png"}

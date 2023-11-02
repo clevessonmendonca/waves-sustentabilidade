@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export const HowItWork = () => {
   return (
-    <div className="relative mt-52">
+    <section className="relative mt-52">
       <h2 className="text-center text-2xl font-bold text-primary">
         Como funcionamos
       </h2>
@@ -25,6 +25,7 @@ export const HowItWork = () => {
           />
         </svg>
       </span>
+
       <div className="mt-8 flex flex-col items-center justify-center gap-16">
         <div className="flex flex-col items-center justify-center gap-8 px-5 md:flex-row">
           <div className="mt-12 flex max-w-sm flex-col gap-2">
@@ -101,6 +102,6 @@ export const HowItWork = () => {
           />
         </div>
       </div>
-    </div>
+    </section>
   );
 };
