@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export const HowItWork = () => {
   return (
-    <section className="relative mt-52">
+    <section className="relative mt-52" id="#about">
       <h2 className="text-center text-2xl font-bold text-primary">
         Como funcionamos
       </h2>

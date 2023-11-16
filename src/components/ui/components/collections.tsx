@@ -6,7 +6,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@radix-ui/react-separator";
 import { RecycleIcon } from "lucide-react";
 import Link from "next/link";
-import React from "react";
 
 export const Collections = () => {
   return (

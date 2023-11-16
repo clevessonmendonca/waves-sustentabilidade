@@ -3,6 +3,9 @@ import Image from "next/image";
 import { HowItWork } from "./components/how-it-work";
 import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
+import { ContactForm } from "./components/contact";
+import { CTASection } from "./components/cta-section";
+import { ImpactStat } from "./components/impact-stat";
 
 export default function Home() {
   return (
@@ -36,13 +39,15 @@ export default function Home() {
 
           <div className="mt-5 flex gap-4">
             <Button className="shadow-lg">Salve o oceano</Button>
-            <Button
-              variant="outline"
-              className="flex gap-2 border-none bg-transparent shadow-md"
-            >
-              Saiba mais
-              <ArrowRightIcon size={12} />
-            </Button>
+            <Link href="#about">
+              <Button
+                variant="outline"
+                className="flex gap-2 border-none bg-transparent shadow-md"
+              >
+                Saiba mais
+                <ArrowRightIcon size={12} />
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
@@ -59,78 +64,38 @@ export default function Home() {
           positivos para o meio ambiente e a comunidade. Aqui estão alguns dos
           nossos números:
         </p>
-        <div className="mt-12 flex flex-col justify-center gap-8 md:flex-row">
-          <div className="flex flex-col justify-center gap-2 border-l-2 px-5 py-1">
-            <h3 className="text-2xl font-bold">Mais de 2.000</h3>
-            <p className="text-sm">Kilogramas reciclados</p>
-          </div>
-          <div className="flex flex-col justify-center gap-2 border-l-2 px-5 py-1">
-            <h3 className="text-2xl font-bold">100%</h3>
-            <p>Compromisso sustentável</p>
-          </div>
-          <div className="flex flex-col justify-center gap-2 border-l-2 px-5 py-1">
-            <h3 className="text-2xl font-bold">2+</h3>
-            <p>Parcerias com comunidades</p>
-          </div>
-          <div className="flex flex-col justify-center gap-2 border-l-2 px-5 py-1">
-            <h3 className="text-2xl font-bold">20.000+</h3>
-            <p>Usuários satisfeitos</p>
-          </div>
+        <div className="mt-12 flex flex-col gap-8 md:flex-row">
+          <ImpactStat label="Kilogramas reciclados" value="Mais de 2.000" />
+          <ImpactStat label="Compromisso sustentável" value="100%" />
+          <ImpactStat label="Parcerias com comunidades" value="2+" />
+          <ImpactStat label="Usuários satisfeitos" value="20.000+" />
         </div>
       </section>
 
-      <section className="mx-auto mt-32 max-w-7xl ">
-        <div className="relative isolate overflow-hidden bg-gray-900 px-6 pt-16 shadow-2xl sm:rounded-3xl sm:px-16 md:pt-24 lg:flex lg:gap-x-20 lg:px-24 lg:pt-0">
-          <svg
-            viewBox="0 0 1024 1024"
-            className="absolute left-1/2 top-1/2 -z-10 h-[64rem] w-[64rem] -translate-y-1/2 [mask-image:radial-gradient(closest-side,white,transparent)] sm:left-full sm:-ml-80 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2 lg:translate-y-0"
-            aria-hidden="true"
-          >
-            <circle
-              cx="512"
-              cy="512"
-              r="512"
-              fill="url(#759c1415-0410-454c-8f7c-9a820de03641)"
-              fill-opacity="0.7"
-            />
-            <defs>
-              <radialGradient id="759c1415-0410-454c-8f7c-9a820de03641">
-                <stop stop-color="#7775D6" />
-                <stop offset="1" stop-color="#7774D6" />
-              </radialGradient>
-            </defs>
-          </svg>
+      <CTASection />
 
-          <div className="flex max-w-md flex-col justify-center text-center md:text-left">
-            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-              Torna-se parte dessa Onda
-            </h2>
-            <p className="mb-8 opacity-95">
-              Faça parte do nosso movimento de sustentabilidade. Ajude a
-              preservar o meio ambiente e aumentar a reciclagem.
-            </p>
+      <section className="m-40 mx-auto flex max-w-screen-xl flex-col items-center justify-center gap-16 px-5 md:flex-row md:gap-8">
+        <div className="flex w-full max-w-lg flex-col gap-2">
+          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+            Contato
+          </h2>
+          <p className="mb-8 max-w-md text-sm opacity-95">
+            Proin volutpat consequat porttitor cras nullam gravida at. Orci
+            molestie a eu arcu. Sed ut tincidunt integer elementum id sem. Arcu
+            sed malesuada et magna.
+          </p>
 
-            <Link href="/">
-              <Button size="lg">Cadastra-se Agora</Button>
-            </Link>
-            <span className="mt-2 text-xs opacity-75">
-              +300 usuários cadastrados.
-            </span>
+          <div>
+            <h3 className="text-xl font-semibold">Email</h3>
+            <p className="text-primary">waves.contato@waves.com</p>
           </div>
-
-          <div className="relative mt-16 h-80 lg:mt-8">
-            <Image
-              className="absolute -left-1/4 -top-1/4 z-10 w-[40rem] max-w-none sm:-top-2/4 sm:w-[57rem] "
-              src="/shots.png"
-              alt="App screenshot"
-              width={0}
-              height={0}
-              sizes="100vw"
-              style={{
-                objectFit: "contain",
-              }}
-            />
+          <div>
+            <h3 className="text-xl font-semibold">Contato</h3>
+            <p className="text-primary">(61) 9 9999-9999</p>
           </div>
+        </div>
+        <div className="w-full flex-1 rounded-3xl bg-accent px-6 shadow-2xl sm:px-12">
+          <ContactForm />
         </div>
       </section>
     </div>

@@ -1,9 +1,12 @@
+// app/layout/RootLayout.js
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/ui/header";
 import { AuthProvider } from "./providers/auth";
 import { Footer } from "@/components/ui/footer";
+import { Toaster } from "@/components/ui/toaster";
+import { UserProvider } from "./providers/user";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,13 +21,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" className="scroll-smooth">
       <body className={inter.className}>
         <div className="flex h-full flex-col">
           <AuthProvider>
-            <Header />
-            <div className="flex-1">{children}</div>
-            <Footer />
+            <UserProvider>
+              <Header />
+              <div className="flex-1">{children}</div>
+              <Toaster />
+              <Footer />
+            </UserProvider>
           </AuthProvider>
         </div>
       </body>
