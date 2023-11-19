@@ -6,10 +6,21 @@ import { FormValues } from "../dashboard/collection/page";
 export const createCollectionSchedule = async (
   data: FormValues,
   recyclerId: string,
-): Promise<any> => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const collectionScheduleData = {
+) => {
+  try {
+    const recycler = await prismaClient.recycler.findFirst({
+      where: {
+        userId: recyclerId,
+      },
+    });
+    console.log(recyclerId, recycler);
+    if (!recycler) {
+      console.error("Reciclador não encontrado para o userId:", recyclerId);
+      return;
+    }
+
+    const result = await prismaClient.collectionSchedule.create({
+      data: {
         materialType: data.materialType,
         quantityKg: data.quantityKg,
         collectionStartTime: data.collectionTime.startTime,
@@ -17,20 +28,14 @@ export const createCollectionSchedule = async (
         dayOfWeek: data.dayOfWeek,
         description: data.description,
         image: data.image?.path || null,
-        recycler: {
-          connect: { id: recyclerId },
-        },
-      };
+        recyclerId: recycler.id,
+      },
+    });
 
-      const result = await prismaClient.collectionSchedule.create({
-        data: collectionScheduleData,
-      });
-
-      console.log("Agendamento de coleta criado:", result);
-      resolve(result);
-    } catch (error) {
-      console.error("Erro ao criar agendamento de coleta:", error);
-      reject(error);
-    }
-  });
+    console.log("Agendamento de coleta criado:", result);
+  } catch (error) {
+    console.error("Erro ao criar agendamento de coleta:", error);
+  } finally {
+    await prismaClient.$disconnect();
+  }
 };

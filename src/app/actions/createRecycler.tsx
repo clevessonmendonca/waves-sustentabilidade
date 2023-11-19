@@ -1,10 +1,15 @@
 "use server";
 
 import { prismaClient } from "@/lib/prisma";
-import { User } from "../signin/page";
+import { RecycleFormValues } from "../signin/components/recycle-form";
 
-export async function AddDataByUser(values: any, user: User): Promise<any> {
+export async function createRecycler(
+  values: RecycleFormValues,
+  userId: string,
+): Promise<any> {
   return new Promise(async (resolve, reject) => {
+    const kgRecycled = Number(values.kgRecycled);
+
     try {
       const recyclerData = {
         name: values.name,
@@ -15,10 +20,10 @@ export async function AddDataByUser(values: any, user: User): Promise<any> {
         isoCertification: values.isoCertification,
         marketTime: values.marketTime,
         recyclingServiceDescription: values.recyclingServiceDescription,
-        kgRecycled: values.kgRecycled,
+        kgRecycled,
         socialDonations: values.socialDonations,
         donationDetails: values.donationDetails,
-        userId: user.id,
+        userId,
       };
 
       const recycler = await prismaClient.recycler.create({

@@ -3,7 +3,7 @@ CREATE TABLE "Category" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
+    "imageUrl" TEXT NOT NULL,
 
     CONSTRAINT "Category_pkey" PRIMARY KEY ("id")
 );
@@ -12,12 +12,12 @@ CREATE TABLE "Category" (
 CREATE TABLE "Product" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "price" DECIMAL(8,2) NOT NULL,
-    "quantity" INTEGER NOT NULL,
-    "status" TEXT NOT NULL,
-    "image" TEXT NOT NULL,
+    "basePrice" DECIMAL(8,2) NOT NULL,
+    "imageUrls" TEXT[],
     "categoryId" TEXT NOT NULL,
+    "discountPercentage" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
 );

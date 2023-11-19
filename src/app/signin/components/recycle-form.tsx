@@ -6,6 +6,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { FormField } from "@/components/ui/form-field";
+import { createRecycler } from "@/app/actions/createRecycler";
+import { useSession } from "next-auth/react";
 
 export const formSchema = z.object({
   name: z
@@ -29,13 +31,13 @@ export const formSchema = z.object({
     .string()
     .min(10, { message: "A descrição deve ter pelo menos 10 caracteres." }),
   kgRecycled: z
-    .number()
+    .string()
     .min(0, { message: "O peso reciclado deve ser um número positivo." }),
   socialDonations: z.boolean(),
   donationDetails: z.string().optional(),
 });
 
-interface FormValues {
+export interface RecycleFormValues {
   name: string;
   organization: string;
   phone: string;
@@ -44,14 +46,14 @@ interface FormValues {
   isoCertification: boolean;
   marketTime: string;
   recyclingServiceDescription: string;
-  kgRecycled: number;
+  kgRecycled: string;
   socialDonations: boolean;
   donationDetails?: string;
   currentStep: number;
 }
 
 export const RecyclerForm = () => {
-  const form = useForm<FormValues>({
+  const form = useForm<RecycleFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -62,15 +64,17 @@ export const RecyclerForm = () => {
       isoCertification: false,
       marketTime: "",
       recyclingServiceDescription: "",
-      kgRecycled: 0,
+      kgRecycled: "0",
       socialDonations: false,
       donationDetails: "",
       currentStep: 0,
     },
   });
 
-  const { handleSubmit, setValue, watch, formState } = form;
+  const { handleSubmit, setValue, watch } = form;
   const currentStep = watch("currentStep", 0);
+
+  const { data: Session } = useSession();
 
   const handleNextStep = async () => {
     let fieldsToValidate;
@@ -96,12 +100,12 @@ export const RecyclerForm = () => {
     setValue("currentStep", currentStep + 1);
   };
 
-  const onSubmit: SubmitHandler<FormValues> = (values) => {
-    console.log(values);
-
+  const onSubmit: SubmitHandler<RecycleFormValues> = (data) => {
     if (currentStep < 2) return handleNextStep();
 
-    alert("Form submitted successfully!");
+    if (!Session?.user?.id) return;
+
+    createRecycler(data, Session?.user?.id);
   };
 
   const handlePreviousStep = () => {
@@ -170,6 +174,7 @@ export const RecyclerForm = () => {
               error={form.formState?.errors?.isoCertification?.message}
               label={""}
               placeholder={""}
+              type="checkbox"
             />
             <FormField
               name="marketTime"
@@ -205,6 +210,7 @@ export const RecyclerForm = () => {
               error={form.formState?.errors?.socialDonations?.message}
               label={""}
               placeholder={""}
+              type="checkbox"
             />
           </>
         )}
@@ -222,7 +228,11 @@ export const RecyclerForm = () => {
 
         <div className="space-x-4">
           {currentStep > 0 && (
-            <Button type="button" variant="outline" onClick={handlePreviousStep}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handlePreviousStep}
+            >
               Anterior
             </Button>
           )}
@@ -231,7 +241,11 @@ export const RecyclerForm = () => {
               Próximo
             </Button>
           )}
-          {currentStep === 2 && <Button type="submit">Enviar</Button>}
+          {currentStep === 2 && (
+            <Button type="submit" disabled={form.formState.isSubmitting}>
+              Enviar
+            </Button>
+          )}
         </div>
       </form>
     </Form>

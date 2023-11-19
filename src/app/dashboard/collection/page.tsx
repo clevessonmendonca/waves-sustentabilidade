@@ -88,7 +88,7 @@ export default function FormCollection({
 
     if (!Session?.user?.id) return;
 
-    createCollectionSchedule(form.getValues(), Session?.user?.id);
+    createCollectionSchedule(data, Session?.user?.id);
   };
 
   const handleMaterialChange = (material: string) => {
