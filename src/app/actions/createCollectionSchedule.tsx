@@ -1,10 +1,10 @@
 "use server";
 
 import { prismaClient } from "@/lib/prisma";
-import { FormValues } from "../dashboard/collection/page";
+import { FormCollectionValues } from "../dashboard/collection/page";
 
 export const createCollectionSchedule = async (
-  data: FormValues,
+  data: FormCollectionValues,
   recyclerId: string,
 ) => {
   try {
@@ -32,7 +32,7 @@ export const createCollectionSchedule = async (
       },
     });
 
-    console.log("Agendamento de coleta criado:", result);
+    return result
   } catch (error) {
     console.error("Erro ao criar agendamento de coleta:", error);
   } finally {

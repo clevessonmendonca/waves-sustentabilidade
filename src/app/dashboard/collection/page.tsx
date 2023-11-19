@@ -6,25 +6,19 @@ import { Form } from "@/components/ui/form";
 import { FormField } from "@/components/ui/form-field";
 import { MyDropzone } from "./components/drop-zone";
 import { useState } from "react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { BoxesIcon, CupSodaIcon, LayersIcon } from "lucide-react";
 import { FileWithPath } from "react-dropzone";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { createCollectionSchedule } from "@/app/actions/createCollectionSchedule";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
+import { WeekDayRadioGroup } from "./components/weekday-radio-group";
+import { MaterialType } from "./components/material-type";
+import { LoaderIcon } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
-const days = [
-  "Segunda",
-  "Terça",
-  "Quarta",
-  "Quinta",
-  "Sexta",
-  "Sábado",
-  "Domingo",
-];
-
-export interface FormValues {
+export interface FormCollectionValues {
   materialType: string;
   quantityKg: string;
   collectionTime: {
@@ -73,86 +67,61 @@ const FormCollectionSchema = z.object({
 export default function FormCollection({
   onSubmit,
 }: {
-  onSubmit: SubmitHandler<FormValues>;
+  onSubmit: SubmitHandler<FormCollectionValues>;
 }) {
-  const form = useForm<FormValues>({
+  const form = useForm<FormCollectionValues>({
     resolver: zodResolver(FormCollectionSchema),
   });
   const { data: Session } = useSession();
 
-  const [selectedMaterial, setSelectedMaterial] = useState<string | null>(null);
-  const [weekDay, setWeekDay] = useState<string | null>(null);
+  const router = useRouter();
+  const { toast } = useToast();
 
-  const handleFormSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log("Form data submitted:", data);
+  const [isLoading, setIsLoading] = useState(false);
 
+  const handleFormSubmit: SubmitHandler<FormCollectionValues> = async (
+    data,
+  ) => {
     if (!Session?.user?.id) return;
+    console.log(data);
+    try {
+      setIsLoading(true);
 
-    createCollectionSchedule(data, Session?.user?.id);
-  };
+      toast({
+        title: "Válidando Agendamento",
+        description: "Seus dados estão sendo válidados, por favor aguarde!",
+      });
 
-  const handleMaterialChange = (material: string) => {
-    setSelectedMaterial(material);
-    form.setValue("materialType", material);
-  };
+      await createCollectionSchedule(data, Session?.user?.id);
 
-  const handleWeekDayChange = (day: string) => {
-    setWeekDay(day);
-    form.setValue("dayOfWeek", day);
+      toast({
+        title: "Agendado com Sucesso!",
+        description: "Seus dados foram válidados.",
+      });
+
+      router.push("/dashboard");
+    } catch (error) {
+      toast({
+        title: "Uh oh! Parece que deu algo errado.",
+        description:
+          "Ocorreu um erro ao cadastrar seu agendamento. Tente novamente mais tarde.",
+      });
+
+      console.error("Erro ao criar agendamento de coleta:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleFormSubmit)}
-        className="space-y-8 px-5"
+        className="m-8 mx-auto w-full max-w-screen-md space-y-8 px-5"
       >
-        <div className="space-y-2">
-          <RadioGroup
-            onValueChange={handleMaterialChange}
-            defaultValue={selectedMaterial || ""}
-            className="flex gap-4"
-          >
-            {[
-              { value: "Paper", label: "Papel", icon: <LayersIcon /> },
-              { value: "Plastic", label: "Plástico", icon: <CupSodaIcon /> },
-              {
-                value: "Other",
-                label: "Outros",
-                icon: <BoxesIcon />,
-                input: true,
-              },
-            ].map(({ value, label, icon, input }) => (
-              <div key={value} className="flex flex-col items-center gap-2">
-                <RadioGroupItem value={value} id={value} className="sr-only" />
-                <label
-                  className={`flex w-full max-w-[70px] cursor-pointer flex-col items-center justify-center rounded-full border-2 bg-accent p-5 ${
-                    selectedMaterial === value && "bg-primary"
-                  }`}
-                  htmlFor={value}
-                  onClick={() => handleMaterialChange(value)}
-                >
-                  {icon}
-                </label>
-                <p className="text-sm opacity-75">{label}</p>
-              </div>
-            ))}
-          </RadioGroup>
-          {selectedMaterial === "Other" && (
-            <div className="flex">
-              <FormField
-                name="materialType"
-                label="Digite o material"
-                placeholder="Digite o material"
-                form={form}
-                error={form.formState?.errors?.materialType?.message?.toString()}
-              />
-            </div>
-          )}
-        </div>
-        <p className="text-sm text-red-600 opacity-75">
-          {form.formState?.errors?.materialType?.message?.toString()}
-        </p>
+        <MaterialType form={form} />
+
+        <Separator className="my-4" />
 
         <FormField
           name="quantityKg"
@@ -181,29 +150,7 @@ export default function FormCollection({
           error={form.formState?.errors?.collectionTime?.endTime?.message?.toString()}
         />
 
-        <RadioGroup
-          onValueChange={handleWeekDayChange}
-          defaultValue={weekDay || ""}
-          className="flex flex-wrap space-y-2"
-        >
-          {days.map((day) => (
-            <div
-              key={day}
-              className="flex flex-wrap items-center justify-center gap-4"
-            >
-              <RadioGroupItem value={day} id={day} className="sr-only" />
-              <label
-                className={`flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-full border-2 bg-accent p-5 ${
-                  weekDay === day ? "bg-primary" : "text-gray-500"
-                }`}
-                htmlFor={day}
-                onClick={() => handleWeekDayChange(day)}
-              >
-                {day}
-              </label>
-            </div>
-          ))}
-        </RadioGroup>
+        <WeekDayRadioGroup form={form} />
 
         <FormField
           name="description"
@@ -214,6 +161,8 @@ export default function FormCollection({
           error={form.formState?.errors?.description?.message?.toString()}
         />
 
+        <Separator className="my-4" />
+
         <MyDropzone
           onDrop={(acceptedFiles) => {
             console.log("Imagem registrada:", acceptedFiles[0]);
@@ -221,9 +170,22 @@ export default function FormCollection({
           }}
         />
 
-        <Button type="submit" disabled={form.formState?.isSubmitting}>
-          Agendar Coleta
-        </Button>
+        <div className="flex w-full items-end justify-end">
+          <Button
+            type="submit"
+            size="lg"
+            disabled={form.formState?.isSubmitting}
+          >
+            {isLoading ? (
+              <>
+                <LoaderIcon className="mr-2 h-4 w-4 animate-spin" />
+                Enviando
+              </>
+            ) : (
+              "Agendar Coleta"
+            )}
+          </Button>
+        </div>
       </form>
     </Form>
   );
