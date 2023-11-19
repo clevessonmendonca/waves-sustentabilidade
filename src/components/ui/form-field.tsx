@@ -16,7 +16,7 @@ interface RecyclerFormFieldProps {
   error?: string;
 }
 
-export const RecyclerFormField: React.FC<RecyclerFormFieldProps> = ({ name, label, placeholder, type = 'text', checkboxLabel, form, error }) => {
+export const FormField: React.FC<RecyclerFormFieldProps> = ({ name, label, placeholder, type = 'text', checkboxLabel, form, error }) => {
   const { register } = form;
 
   return (

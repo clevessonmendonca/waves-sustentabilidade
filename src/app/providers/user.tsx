@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useEffect, useState } from 'react';
+import React, { createContext, ReactNode, useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { User } from '../signin/page';
 import { getUser } from '../actions/getUser';
@@ -11,7 +11,7 @@ interface UserContextType {
 
 export const UserContext = createContext<UserContextType | undefined>(undefined);
 
-export const UserProvider: React.FC = ({ children }) => {
+export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { data: session, status } = useSession();
   const [userData, setUserData] = useState<User | null>(null);
 

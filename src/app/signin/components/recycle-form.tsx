@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { RecyclerFormField } from "./recycle-form-field";
+import { FormField } from "@/components/ui/form-field";
 
 export const formSchema = z.object({
   name: z
@@ -113,7 +113,7 @@ export const RecyclerForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
         {currentStep === 0 && (
           <>
-            <RecyclerFormField
+            <FormField
               name="name"
               label="Nome"
               placeholder="Seu Nome"
@@ -121,7 +121,7 @@ export const RecyclerForm = () => {
               error={form.formState?.errors?.name?.message}
               checkboxLabel={undefined}
             />
-            <RecyclerFormField
+            <FormField
               name="organization"
               label="Organização"
               placeholder="Sua Organização"
@@ -129,7 +129,7 @@ export const RecyclerForm = () => {
               error={form.formState?.errors?.organization?.message}
               checkboxLabel={undefined}
             />
-            <RecyclerFormField
+            <FormField
               name="phone"
               label="Telefone"
               placeholder="Seu Telefone"
@@ -137,7 +137,7 @@ export const RecyclerForm = () => {
               error={form.formState?.errors?.phone?.message}
               checkboxLabel={undefined}
             />
-            <RecyclerFormField
+            <FormField
               name="cpfCnpj"
               label="CPF/CNPJ"
               placeholder="Seu CPF/CNPJ"
@@ -150,7 +150,7 @@ export const RecyclerForm = () => {
 
         {currentStep === 1 && (
           <>
-            <RecyclerFormField
+            <FormField
               name="cep"
               label="CEP"
               placeholder="Seu CEP"
@@ -163,7 +163,7 @@ export const RecyclerForm = () => {
 
         {currentStep === 2 && (
           <>
-            <RecyclerFormField
+            <FormField
               name="isoCertification"
               checkboxLabel="Possuo ISO"
               form={form}
@@ -171,7 +171,7 @@ export const RecyclerForm = () => {
               label={""}
               placeholder={""}
             />
-            <RecyclerFormField
+            <FormField
               name="marketTime"
               label="Tempo de Atuação no Mercado"
               placeholder="Tempo de Atuação no Mercado"
@@ -179,7 +179,7 @@ export const RecyclerForm = () => {
               error={form.formState?.errors?.marketTime?.message}
               checkboxLabel={undefined}
             />
-            <RecyclerFormField
+            <FormField
               name="recyclingServiceDescription"
               label="Descrição do Serviço de Reciclagem"
               placeholder="Descrição do Serviço de Reciclagem"
@@ -189,7 +189,7 @@ export const RecyclerForm = () => {
               }
               checkboxLabel={undefined}
             />
-            <RecyclerFormField
+            <FormField
               name="kgRecycled"
               label="Peso Reciclado (kg)"
               placeholder="Peso Reciclado (kg)"
@@ -198,7 +198,7 @@ export const RecyclerForm = () => {
               type="number"
               checkboxLabel={undefined}
             />
-            <RecyclerFormField
+            <FormField
               name="socialDonations"
               checkboxLabel="Doações Sociais"
               form={form}
@@ -210,7 +210,7 @@ export const RecyclerForm = () => {
         )}
 
         {watch("socialDonations") && (
-          <RecyclerFormField
+          <FormField
             name="donationDetails"
             label="Detalhes das Doações"
             placeholder="Detalhes das Doações"

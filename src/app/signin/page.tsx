@@ -1,6 +1,5 @@
 "use client";
 
-import { getUserByEmail } from "@/app/actions/getUserByEmail";
 import { RecyclerForm } from "./components/recycle-form";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -28,7 +27,6 @@ export default function DashboardSignin() {
   const { data: session } = useSession();
   const router = useRouter();
   const user = session?.user;
-  const { userData } = useUser();
 
   async function getUser() {
     if (!session) return;

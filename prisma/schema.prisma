@@ -94,6 +94,7 @@ model Recycler {
 
   userId String
   user User @relation(fields: [userId], references: [id])
+  collectionSchedule CollectionSchedule[]
 }
 
 model Collector {
@@ -109,4 +110,18 @@ model Collector {
 
   userId String
   user User @relation(fields: [userId], references: [id])
+}
+
+model CollectionSchedule {
+  id String @id @default(uuid())
+  materialType String
+  quantityKg String
+  collectionStartTime String
+  collectionEndTime String
+  dayOfWeek String
+  description String?
+  image String?
+
+  recyclerId String
+  recycler Recycler @relation(fields: [recyclerId], references: [id])
 }
