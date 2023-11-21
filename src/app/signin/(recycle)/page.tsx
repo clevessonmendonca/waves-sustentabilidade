@@ -1,25 +1,22 @@
 "use client";
 
-import { RecyclerForm } from "./components/recycle-form";
+import { RecyclerForm } from "./components/RecyclerForm";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
-import { VerifyProfile } from "../actions/verifyProfile";
+import { VerifyProfile } from "../../actions/verifyProfile";
 import { useRouter } from "next/navigation";
 
 export interface User {
-  id: string;
   name: string;
-  organization: string;
   phone: string;
   cpfCnpj: string;
   cep: string;
-  isoCertification: boolean;
-  marketTime: string;
-  recyclingServiceDescription: string;
-  kgRecycled: number;
-  socialDonations: boolean;
-  donationDetails: string;
+  city: string;
+  uf: string;
+  birthDate: Date;
+  sex: string;
+  timeInMarket: string;
 }
 
 export default function DashboardSignin() {

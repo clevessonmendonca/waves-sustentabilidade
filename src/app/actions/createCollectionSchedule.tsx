@@ -8,16 +8,14 @@ export const createCollectionSchedule = async (
   recyclerId: string,
 ) => {
   try {
-    const recycler = await prismaClient.recycler.findFirst({
-      where: {
-        userId: recyclerId,
+    const user = await prismaClient.person.findFirst({
+      where: { userId: recyclerId },
+      include: {
+        recycler: true,
       },
     });
-    console.log(recyclerId, recycler);
-    if (!recycler) {
-      console.error("Reciclador não encontrado para o userId:", recyclerId);
-      return;
-    }
+    
+    if (!user) return;
 
     const result = await prismaClient.collectionSchedule.create({
       data: {
@@ -28,11 +26,11 @@ export const createCollectionSchedule = async (
         dayOfWeek: data.dayOfWeek,
         description: data.description,
         image: data.image?.path || null,
-        recyclerId: recycler.id,
+        recyclerId: user.recycler[0].id,
       },
     });
 
-    return result
+    return result;
   } catch (error) {
     console.error("Erro ao criar agendamento de coleta:", error);
   } finally {

@@ -4,12 +4,9 @@ import { prismaClient } from "@/lib/prisma";
 
 export const getUser = async (id: string) => {
   try {
-    const user = await prismaClient.user.findFirst({
+    const user = await prismaClient.person.findFirst({
       where: {
-        id,
-      },
-      include: {
-        recyclers: true,
+        userId: id,
       },
     });
 

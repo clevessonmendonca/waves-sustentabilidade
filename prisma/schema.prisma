@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -66,8 +63,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-    recyclers Recycler[]
-  collectors Collector[]
+person Person[]
 }
 
 model VerificationToken {
@@ -78,24 +74,51 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Recycler {
+model Person {
   id String @id @default(uuid())
   name String
-  organization String
   phone String
   cpfCnpj String
+  sex String
+  birthDate DateTime
+  uf String
+  city String
   cep String
-  isoCertification Boolean
-  marketTime String
+  timeInMarket String
+
+  collector Collector[]
+  recycler Recycler[]
+  
+  userId String
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Recycler {
+  id String @id @default(uuid())
   recyclingServiceDescription String
   kgRecycled Int
   socialDonations Boolean
   donationDetails String?
 
-  userId String
-  user User @relation(fields: [userId], references: [id])
- 
+  personId String
+  person Person @relation(fields: [personId], references: [id])
+
   collectionSchedule CollectionSchedule[]
+}
+
+model Collector {
+  id String @id @default(uuid())
+  collectionServiceDescription String
+  kgCollected Int
+  marketTime String
+  organization String
+  cpfCnpj String
+  isoCertification Boolean
+  purchases String
+  biography String
+
+  personId String
+  person Person @relation(fields: [personId], references: [id])
 }
 
 model CollectionSchedule {
@@ -110,19 +133,4 @@ model CollectionSchedule {
 
   recyclerId String
   recycler Recycler @relation(fields: [recyclerId], references: [id])
-}
-
-model Collector {
-  id String @id @default(uuid())
-  name String
-  organization String
-  phone String
-  cpfCnpj String
-  isoCertification Boolean
-  marketTime String
-  collectionServiceDescription String
-  kgCollected Int
-
-  userId String
-  user User @relation(fields: [userId], references: [id])
 }

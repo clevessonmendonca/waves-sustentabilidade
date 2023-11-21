@@ -83,7 +83,7 @@ export default function FormCollection({
     data,
   ) => {
     if (!Session?.user?.id) return;
-    console.log(data);
+
     try {
       setIsLoading(true);
 
@@ -99,7 +99,7 @@ export default function FormCollection({
         description: "Seus dados foram válidados.",
       });
 
-      router.push("/dashboard");
+      router.push("/dashboard/collectors");
     } catch (error) {
       toast({
         title: "Uh oh! Parece que deu algo errado.",
@@ -129,7 +129,7 @@ export default function FormCollection({
           placeholder="Quantidade (KG)"
           type="number"
           form={form}
-          error={form.formState?.errors?.quantityKg?.message?.toString()}
+          error={form.formState?.errors?.quantityKg?.message}
         />
 
         <FormField
@@ -138,7 +138,7 @@ export default function FormCollection({
           placeholder="Horário da Coleta (Início)"
           type="time"
           form={form}
-          error={form.formState?.errors?.collectionTime?.startTime?.message?.toString()}
+          error={form.formState?.errors?.collectionTime?.startTime?.message}
         />
 
         <FormField
@@ -147,7 +147,7 @@ export default function FormCollection({
           placeholder="Horário da Coleta (Fim)"
           type="time"
           form={form}
-          error={form.formState?.errors?.collectionTime?.endTime?.message?.toString()}
+          error={form.formState?.errors?.collectionTime?.endTime?.message}
         />
 
         <WeekDayRadioGroup form={form} />
@@ -158,7 +158,7 @@ export default function FormCollection({
           placeholder="Descrição (opcional)"
           type="textarea"
           form={form}
-          error={form.formState?.errors?.description?.message?.toString()}
+          error={form.formState?.errors?.description?.message}
         />
 
         <Separator className="my-4" />
