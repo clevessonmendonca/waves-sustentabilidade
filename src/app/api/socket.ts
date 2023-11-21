@@ -1,35 +1,32 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { Server as NetServer } from "http";  // Importar apenas NetServer
-import { Server as SocketIOServer } from "socket.io";
+// import { Server as NetServer } from "http";
+// import { NextApiRequest, NextApiResponse } from "next";
+// import { Socket, Server as SocketIOServer } from "socket.io";
 
-export type NextApiResponseServerIo = NextApiResponse & {
-  socket: SocketIOServer;  // Atualizar o tipo para SocketIOServer diretamente
-};
+// export type NextApiResponseServerIo = NextApiResponse & {
+//   socket: Socket & {
+//     server: NetServer & {
+//       io?: SocketIOServer;
+//     };
+//   };
+// };
 
-const ioHandler = (req: NextApiRequest, res: NextApiResponseServerIo) => {
-  const socketServer = res.socket.server as {
-    io?: SocketIOServer;
-  };
+// export const config = {
+//   api: {
+//     bodyParser: false,
+//   },
+// };
 
-  if (!socketServer.io) {
-    const httpServer: NetServer = res.socket.server as NetServer;  // Usar res.socket.server diretamente
-    const io = new SocketIOServer(httpServer, {
-      path: "/api/socket",
-      cors: {
-        origin: "*",
-      },
-    });
+// const ioHandler = (req: NextApiRequest, res: NextApiResponseServerIo) => {
+//   if (!res.socket.server.io) {
+//     const httpServer: NetServer = res.socket.server as NetServer;
+//     const io = new SocketIOServer(httpServer, {
+//       path: "/api/socket/io",
+//       // Outros parâmetros, se necessário
+//     });
+//     res.socket.server.io = io;
+//   }
 
-    res.socket.server.io = io;
-  }
+//   res.end();
+// };
 
-  res.end();
-};
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
-export default ioHandler;
+// export default ioHandler;
