@@ -57,7 +57,7 @@ export default function CollectorList() {
   useEffect(() => {
     async function fetchCollectors() {
       try {
-        const getUserWithCollector = await getCollectors();
+        const getUserWithCollector: any[] = await getCollectors();
         setUsers(getUserWithCollector);
         setDistancesCalculated(false);
       } catch (error) {
@@ -74,22 +74,20 @@ export default function CollectorList() {
     const distancesObject: Record<string, number> = {};
 
     await Promise.all(
-      users.map(async (user) => {
+      users.map(async (user: any) => {
         await Promise.all(
-          user.person.map(async (associatedPerson) => {
+          user.person.map(async (associatedPerson: any) => {
             await Promise.all(
-              associatedPerson.collector.map(async (collector) => {
-                const zipCodeUser1 = associatedPerson.cep;
-                const zipCodeUser2 = personZipCode;
+              associatedPerson.collector.map(async (collector: any) => {
+                const zipCodeUser1: string = associatedPerson.cep;
+                const zipCodeUser2: string = personZipCode;
 
-                const coordinatesUser1 =
-                  await getCoordinatesFromCEP(zipCodeUser1);
-                const coordinatesUser2 =
-                  await getCoordinatesFromCEP(zipCodeUser2);
+                const coordinatesUser1: any = await getCoordinatesFromCEP(zipCodeUser1);
+                const coordinatesUser2: any = await getCoordinatesFromCEP(zipCodeUser2);
 
                 if (!coordinatesUser1 || !coordinatesUser2) return;
 
-                const distance = haversineDistance(
+                const distance: number = haversineDistance(
                   coordinatesUser1.latitude,
                   coordinatesUser1.longitude,
                   coordinatesUser2.latitude,
@@ -114,7 +112,7 @@ export default function CollectorList() {
 
   return (
     <div className="mx-auto flex max-w-screen-xl flex-col gap-4 px-5">
-      {users.map((user) => (
+      {users.map((user: any) => (
         <Card key={user.id} className="flex max-w-xl items-center gap-4 p-4">
           <Image
             src={user.image}
