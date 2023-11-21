@@ -1,11 +1,18 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { sendEmail } from "@/lib/email";
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+interface RequestWithBody extends NextApiRequest {
+  body: {
+    name: string;
+    email: string;
+    message: string;
+  };
+}
+
+export async function POST(req: RequestWithBody, res: NextApiResponse) {
   if (req.method === "POST") {
     try {
-      const body = await req.body;
-      const { name, email, message } = body;
+      const { name, email, message } = req.body;
 
       await sendEmail(name, email, message);
       res.status(200).json({ message: "Email enviado com sucesso" });
