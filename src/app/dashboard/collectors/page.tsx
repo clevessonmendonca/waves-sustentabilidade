@@ -38,7 +38,7 @@ export interface Person extends User {
 
 export interface User {
   id: string;
-  name: string;
+  name?: string;
   email: string;
   image: string;
   person: Person[];
@@ -54,9 +54,9 @@ export default function CollectorList() {
   useEffect(() => {
     async function fetchCollectors() {
       try {
-        const getUserWithCollector = await getCollectors();
+        // Explicitly specify the type of getUserWithCollector as User[]
+        const getUserWithCollector: User[] = await getCollectors();
         setUsers(getUserWithCollector);
-        setDistancesCalculated(false);
       } catch (error) {
         console.error("Error fetching collectors:", error);
       }
@@ -122,7 +122,8 @@ export default function CollectorList() {
 
           <div>
             <span className="text-sm">Catador</span>
-            <h2 className="text-lg font-bold">{user.name}</h2>
+            <h2 className="text-lg font-bold">{user.name ?? "Unknown"}</h2>
+
             {user.person.map((associatedPerson) => (
               <ul key={associatedPerson.id}>
                 {associatedPerson.collector.map((collector) => (
