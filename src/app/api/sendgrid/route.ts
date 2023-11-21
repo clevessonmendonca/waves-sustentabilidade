@@ -4,7 +4,7 @@ import { sendEmail } from "@/lib/email";
 export async function POST(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     try {
-      const body = await req.json();
+      const body = await req.body;
       const { name, email, message } = body;
 
       await sendEmail(name, email, message);
