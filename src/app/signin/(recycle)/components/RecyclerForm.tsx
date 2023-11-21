@@ -90,7 +90,7 @@ export const RecyclerForm = () => {
   const [date, setDate] = useState<Date>();
 
   const handleNextStep = async () => {
-    let fieldsToValidate;
+    let fieldsToValidate: Array<keyof RecycleFormValues> = [];
 
     if (currentStep === 0) {
       fieldsToValidate = ["name", "phone", "cpfCnpj", "sex", "birthDate"];
