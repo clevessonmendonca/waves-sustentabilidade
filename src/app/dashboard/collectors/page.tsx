@@ -8,20 +8,16 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { haversineDistance } from "@/app/actions/coordinates/haversineDistance";
 
-export interface Collector extends Person {
+// interfaces.ts
+export interface User {
   id: string;
-  collectionServiceDescription: string;
-  kgCollected: number;
-  marketTime: string;
-  organization: string;
-  cpfCnpj: string;
-  isoCertification: boolean;
-  purchases: string;
-  biography: string;
-  personId: string;
+  name: string;
+  email: string;
+  image: string;
+  person: Person[];
 }
 
-export interface Person extends User {
+export interface Person {
   id: string;
   name: string;
   phone: string;
@@ -32,20 +28,27 @@ export interface Person extends User {
   city: string;
   cep: string;
   timeInMarket: string;
-  userId: string;
   collector: Collector[];
+  userId: string;
+  user: User;
 }
 
-export interface User {
+export interface Collector {
   id: string;
-  name?: string;
-  email: string;
-  image: string;
-  person: Person[];
+  collectionServiceDescription: string;
+  kgCollected: number;
+  marketTime: string;
+  organization: string;
+  cpfCnpj: string;
+  isoCertification: boolean;
+  purchases: string;
+  biography: string;
+  personId: string;
+  person: Person;
 }
 
 export default function CollectorList() {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<any[]>([]);
   const [distancesCalculated, setDistancesCalculated] = useState(false);
   const [distances, setDistances] = useState<Record<string, number>>({});
 
@@ -54,9 +57,9 @@ export default function CollectorList() {
   useEffect(() => {
     async function fetchCollectors() {
       try {
-        // Explicitly specify the type of getUserWithCollector as User[]
-        const getUserWithCollector: User[] = await getCollectors();
+        const getUserWithCollector = await getCollectors();
         setUsers(getUserWithCollector);
+        setDistancesCalculated(false);
       } catch (error) {
         console.error("Error fetching collectors:", error);
       }
@@ -83,6 +86,8 @@ export default function CollectorList() {
                   await getCoordinatesFromCEP(zipCodeUser1);
                 const coordinatesUser2 =
                   await getCoordinatesFromCEP(zipCodeUser2);
+
+                if (!coordinatesUser1 || !coordinatesUser2) return;
 
                 const distance = haversineDistance(
                   coordinatesUser1.latitude,
@@ -122,11 +127,10 @@ export default function CollectorList() {
 
           <div>
             <span className="text-sm">Catador</span>
-            <h2 className="text-lg font-bold">{user.name ?? "Unknown"}</h2>
-
-            {user.person.map((associatedPerson) => (
+            <h2 className="text-lg font-bold">{user.name}</h2>
+            {user.person.map((associatedPerson: any) => (
               <ul key={associatedPerson.id}>
-                {associatedPerson.collector.map((collector) => (
+                {associatedPerson.collector.map((collector: any) => (
                   <li key={collector.id}>
                     <p className="mt-2 text-xs text-accent-foreground">
                       Organização:
@@ -151,7 +155,9 @@ export default function CollectorList() {
                         />{" "}
                       </span>
                       {collector.personId !== user.id &&
-                        `Aproximadamente ${distances[collector.id]} km`}
+                      !distances[collector.id] === undefined
+                        ? `Aproximadamente ${distances[collector.id]} km`
+                        : "Não foi possível calcular a quantos Km ele se encontra."}
                     </p>
                   </li>
                 ))}
