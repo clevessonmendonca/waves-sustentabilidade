@@ -43,7 +43,11 @@ export const MyDropzone: FC<MyDropzoneProps> = ({ onDrop }) => {
   };
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: "image/png, image/jpeg, image/webp",
+    accept: {
+      "image/png": [".png"],
+      "image/jpeg": [".jpg"],
+      "image/webp": [".webp"],
+    },
     onDrop: onDropCallback,
   });
 
