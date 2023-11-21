@@ -8,6 +8,7 @@ import { VerifyProfile } from "../../actions/verifyProfile";
 import { useRouter } from "next/navigation";
 
 export interface User {
+  id: any;
   name: string;
   phone: string;
   cpfCnpj: string;

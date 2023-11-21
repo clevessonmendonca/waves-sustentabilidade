@@ -21,29 +21,25 @@ export const Collections = () => {
     const fetchData = async () => {
       try {
         if (userData && userData.userData && userData.userData.id) {
-          const userId = userData.userData.id;
-
-          const totalCollected = await prisma.collector
-            .findUnique({
-              where: { userId },
-            })
-            .then((collector) => collector?.kgCollected || 0);
-
-          const history = await prisma.collection.findMany({
-            where: { collector: { userId } },
-            orderBy: { date: "desc" },
+          const personId = userData.userData.id;
+  
+          if (!personId) return;
+  
+          const collector = await prisma.collector.findFirst({
+            where: { personId: personId },
           });
-
+  
+          const totalCollected = collector?.kgCollected || 0;
           setTotalKgCollected(totalCollected);
-          setCollectionHistory(history);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
+  
     fetchData();
   }, [userData]);
+  
 
   if (!userData || !userData.userData) {
     return <Loading />;
