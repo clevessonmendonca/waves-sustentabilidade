@@ -7,6 +7,7 @@ import { AuthProvider } from "./providers/auth";
 import { Footer } from "@/components/ui/footer";
 import { Toaster } from "@/components/ui/toaster";
 import { UserProvider } from "./providers/user";
+import { SocketProvider } from "./providers/socket";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,10 +27,12 @@ export default function RootLayout({
         <div className="flex h-full flex-col">
           <AuthProvider>
             <UserProvider>
-              <Header />
-              <div className="flex-1">{children}</div>
-              <Toaster />
-              <Footer />
+              <SocketProvider>
+                <Header />
+                <div className="flex-1">{children}</div>
+                <Toaster />
+                <Footer />
+              </SocketProvider>
             </UserProvider>
           </AuthProvider>
         </div>

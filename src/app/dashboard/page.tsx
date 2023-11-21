@@ -1,12 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import { Collections } from "../../components/ui/components/collections";
 import { Map } from "../../components/ui/components/maps";
 import { UserContext } from "../providers/user";
 import Loading from "../loading";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Banner } from "./components/banner";
+import Chat from "@/components/ui/chat";
 
 export default function Home() {
   const userData = useContext(UserContext);
@@ -17,7 +17,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className="mx-auto max-w-[1920px] overflow-hidden max-h-[380px]">
+      <div className="mx-auto max-h-[380px] max-w-[1920px] overflow-hidden">
         <Banner
           src="/banner-home.webp"
           className="h-auto w-full"
@@ -26,6 +26,8 @@ export default function Home() {
       </div>
 
       <Collections />
+
+      <Chat />
 
       <div className="mt-5 w-full">
         <Map />

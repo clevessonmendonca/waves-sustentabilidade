@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { FormField } from "@/components/ui/form-field";
 import { MyDropzone } from "./components/drop-zone";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FileWithPath } from "react-dropzone";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -64,11 +64,7 @@ const FormCollectionSchema = z.object({
     .optional(),
 });
 
-export default function FormCollection({
-  onSubmit,
-}: {
-  onSubmit: SubmitHandler<FormCollectionValues>;
-}) {
+export default function FormCollection() {
   const form = useForm<FormCollectionValues>({
     resolver: zodResolver(FormCollectionSchema),
   });

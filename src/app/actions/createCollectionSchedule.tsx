@@ -14,7 +14,7 @@ export const createCollectionSchedule = async (
         recycler: true,
       },
     });
-    
+
     if (!user) return;
 
     const result = await prismaClient.collectionSchedule.create({
