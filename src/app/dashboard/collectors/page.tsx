@@ -3,10 +3,13 @@
 import { getCollectors } from "@/app/actions/getCollectors";
 import { getCoordinatesFromCEP } from "@/app/actions/coordinates/getCoordinatesFromCep";
 import { Card } from "@/components/ui/card";
-import { MapPinIcon } from "lucide-react";
+import { MapPinIcon, MessageCircleIcon, PhoneIcon } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { haversineDistance } from "@/app/actions/coordinates/haversineDistance";
+import { Button } from "@/components/ui/button";
+import { CollectorInfoDialog } from "./components/collector-info-dialog";
+import { Separator } from "@/components/ui/separator";
 
 // interfaces.ts
 export interface User {
@@ -51,6 +54,8 @@ export default function CollectorList() {
   const [users, setUsers] = useState<any[]>([]);
   const [distancesCalculated, setDistancesCalculated] = useState(false);
   const [distances, setDistances] = useState<Record<string, number>>({});
+  const [selectedCollector, setSelectedCollector] = useState<User | null>(null);
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   let personZipCode: string = "72800-200";
 
@@ -114,58 +119,98 @@ export default function CollectorList() {
 
   return (
     <div className="mx-auto flex max-w-screen-xl flex-col gap-4 px-5">
-      {users.map((user: any) => (
-        <Card key={user.id} className="flex max-w-xl items-center gap-4 p-4">
-          <Image
-            src={user.image}
-            width={0}
-            height={0}
-            sizes="100vw"
-            className="h-full w-full max-w-[50px] rounded-full bg-contain"
-            alt={""}
-          />
+      <div>
+        <h1 className="text-lg font-bold">Aguardando agendamento</h1>
+        <p className="max-w-md opacity-75">
+          Seu agendamento foi solicitado, todos os coletadores próximo de você
+          foram notificados, aguarde alguém aceitar
+        </p>
+      </div>
 
-          <div>
-            <span className="text-sm">Catador</span>
-            <h2 className="text-lg font-bold">{user.name}</h2>
-            {user.person.map((associatedPerson: any) => (
-              <ul key={associatedPerson.id}>
-                {associatedPerson.collector.map((collector: any) => (
-                  <li key={collector.id}>
-                    <p className="mt-2 text-xs text-accent-foreground">
-                      Organização:
-                    </p>
-                    <h4 className="text-sm font-semibold">
-                      {collector.organization}
-                    </h4>
-                    <p className="mt-2 text-xs text-accent-foreground opacity-80">
-                      {collector.collectionServiceDescription ||
-                        "Faço coletas!"}
-                    </p>
-                    <p className="mt-4 flex items-center gap-2 text-sm font-semibold">
-                      <span>
-                        <MapPinIcon
-                          color={
-                            collector.personId !== user.id &&
-                            distances[collector.id] > 5
-                              ? "red"
-                              : "green"
-                          }
-                          size={24}
-                        />{" "}
-                      </span>
-                      {collector.personId !== user.id &&
-                      !distances[collector.id] === undefined
-                        ? `Aproximadamente ${distances[collector.id]} km`
-                        : "Não foi possível calcular a quantos Km ele se encontra."}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            ))}
-          </div>
-        </Card>
-      ))}
+      <Separator />
+
+      <div>
+        <h2 className="text-2xl font-semibold">Para que esperar tanto!</h2>
+        <p className="mb-4 text-sm opacity-75">
+          Abaixo você pode mandar mensagem diretamente para algum coletador
+          próximo de você.
+        </p>
+
+        {users.map((user: any) => (
+          <Card
+            key={user.id}
+            onClick={() => {
+              setSelectedCollector(user);
+              setOpenModal(true);
+            }}
+            className="flex max-w-xl cursor-pointer items-center gap-4 p-4"
+          >
+            <Image
+              src={user.image}
+              width={0}
+              height={0}
+              sizes="100vw"
+              className="h-full w-full max-w-[80px] rounded-full bg-contain"
+              alt={""}
+            />
+
+            <div>
+              <span className="text-sm">Catador</span>
+              <h2 className="text-lg font-bold">{user.name}</h2>
+              {user.person.map((associatedPerson: any) => (
+                <ul key={associatedPerson.id}>
+                  {associatedPerson.collector.map((collector: any) => (
+                    <li key={collector.id}>
+                      <p className="mt-2 text-xs text-accent-foreground">
+                        Organização:
+                      </p>
+                      <h4 className="text-sm font-semibold">
+                        {collector.organization}
+                      </h4>
+                      <p className="mt-2 text-xs text-accent-foreground opacity-80">
+                        {collector.collectionServiceDescription ||
+                          "Faço coletas!"}
+                      </p>
+                      <p className="mt-4 flex items-center gap-2 text-sm font-semibold">
+                        <span>
+                          <MapPinIcon
+                            color={
+                              collector.personId !== user.id &&
+                              distances[collector.id] > 5
+                                ? "red"
+                                : "green"
+                            }
+                            size={24}
+                          />{" "}
+                        </span>
+                        {collector.personId !== user.id &&
+                        !distances[collector.id] === undefined
+                          ? `Aproximadamente ${distances[collector.id]} km`
+                          : "Não foi possível calcular a quantos Km ele se encontra."}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              ))}
+            </div>
+
+            <div className="ml-4 flex h-full flex-col items-end justify-end gap-4">
+              <Button variant="outline" className="rounded-full py-6">
+                <MessageCircleIcon />
+              </Button>
+              <Button variant="outline" className="rounded-full py-6">
+                <PhoneIcon />
+              </Button>
+              <CollectorInfoDialog
+                user={selectedCollector}
+                onOpen={openModal}
+                distances={distances}
+                onClose={() => setSelectedCollector(null)}
+              />
+            </div>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }
