@@ -82,12 +82,14 @@ export default function CollectorList() {
                 const zipCodeUser1: string = associatedPerson.cep;
                 const zipCodeUser2: string = personZipCode;
 
-                const coordinatesUser1: any = await getCoordinatesFromCEP(zipCodeUser1);
-                const coordinatesUser2: any = await getCoordinatesFromCEP(zipCodeUser2);
+                const coordinatesUser1: any =
+                  await getCoordinatesFromCEP(zipCodeUser1);
+                const coordinatesUser2: any =
+                  await getCoordinatesFromCEP(zipCodeUser2);
 
                 if (!coordinatesUser1 || !coordinatesUser2) return;
 
-                const distance: number = haversineDistance(
+                const distance = haversineDistance(
                   coordinatesUser1.latitude,
                   coordinatesUser1.longitude,
                   coordinatesUser2.latitude,
