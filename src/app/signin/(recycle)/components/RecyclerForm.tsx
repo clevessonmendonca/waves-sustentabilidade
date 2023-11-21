@@ -27,6 +27,7 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { SelectSingleEventHandler } from "react-day-picker";
 
 export const formSchema = z.object({
   name: z
@@ -51,7 +52,7 @@ export const formSchema = z.object({
   recyclingServiceDescription: z
     .string()
     .min(10, { message: "A descrição deve ter pelo menos 10 caracteres." }),
-  socialDonations: z.string().default(false),
+  socialDonations: z.string(),
   donationDetails: z.string().optional(),
 });
 
@@ -150,10 +151,11 @@ export const RecyclerForm = () => {
     setValue("currentStep", currentStep - 1);
   };
 
-  const handleDateSelect = (selectedDate: Date) => {
-    setDate(selectedDate);
-
-    form.setValue("birthDate", selectedDate);
+  const handleDateSelect: SelectSingleEventHandler = (selectedDate) => {
+    if (selectedDate) {
+      setDate(selectedDate);
+      form.setValue("birthDate", selectedDate);
+    }
   };
 
   return (
@@ -233,7 +235,7 @@ export const RecyclerForm = () => {
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
                     mode="single"
-                      captionLayout="dropdown-buttons"
+                    captionLayout="dropdown-buttons"
                     selected={date}
                     onSelect={handleDateSelect}
                     initialFocus
