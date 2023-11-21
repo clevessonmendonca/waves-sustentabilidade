@@ -4,7 +4,7 @@ import { Collections } from "../../components/ui/components/collections";
 import { Map } from "../../components/ui/components/maps";
 import { UserContext } from "../providers/user";
 import Loading from "../loading";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { Banner } from "./components/banner";
 import Chat from "@/components/ui/chat";
 
@@ -27,7 +27,7 @@ export default function Home() {
 
       <Collections />
 
-      <Chat />
+      {/* <Chat /> */}
 
       <div className="mt-5 w-full">
         <Map />

@@ -17,8 +17,7 @@ import { useState } from "react";
 import { LoaderIcon } from "lucide-react";
 
 const CollectorSchema = z.object({
-  collectionServiceDescription: z
-    .string(),
+  collectionServiceDescription: z.string(),
   marketTime: z.string(),
   organization: z.string(),
   bio: z.string(),
@@ -37,11 +36,7 @@ export interface CollectorFormValues {
   bio: string;
 }
 
-export default function CollectorForm({
-  onSubmit,
-}: {
-  onSubmit: SubmitHandler<CollectorFormValues>;
-}) {
+export default function CollectorForm() {
   const form = useForm<CollectorFormValues>({
     resolver: zodResolver(CollectorSchema),
   });
@@ -84,7 +79,7 @@ export default function CollectorForm({
       setIsLoading(false);
     }
   };
-console.log()
+  console.log();
   return (
     <Form {...form}>
       <form
@@ -149,7 +144,7 @@ console.log()
             placeholder={""}
             type="checkbox"
           />
-          
+
           <span className="max-w-xs text-xs opacity-75">
             * A certificação ISO 14000 engloba uma série de normas
             internacionais de gestão ambiental.
