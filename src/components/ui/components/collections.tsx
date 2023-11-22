@@ -8,34 +8,12 @@ import { RecycleIcon } from "lucide-react";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { Separator } from "../separator";
+import { any } from "zod";
 
 export const Collections = () => {
   const userData = useContext(UserContext);
-  const [totalKgCollected, setTotalKgCollected] = useState<number | null>(null);
-  const [collectionHistory, setCollectionHistory] = useState<any[]>([]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       if (userData && userData.userData && userData.userData.id) {
-  //         const personId = userData.userData.id;
-
-  //         if (!personId) return;
-
-  //         const collector = await prisma.collector.findFirst({
-  //           where: { personId: personId },
-  //         });
-
-  //         const totalCollected = collector?.kgCollected || 0;
-  //         setTotalKgCollected(totalCollected);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [userData]);
+  const [totalKgCollected, setTotalKgCollected] = useState(null);
+  const [collectionHistory, setCollectionHistory] = useState([]);
 
   if (!userData) {
     return <Loading />;
@@ -110,45 +88,25 @@ export const Collections = () => {
           </div>
         </TabsContent>
         <TabsContent value="history">
-          {collectionHistory.length > 0 ? (
-            <div className="flex flex-col items-center gap-2">
-              <Badge
-                variant="outline"
-                className="flex w-full justify-center px-4 py-2"
-              >
-                <h3 className="text-base">Histórico</h3>
-              </Badge>
-              <ul>
-                {collectionHistory.map((collection) => (
-                  <li key={collection.id}>
-                    <p>Data: {collection.date}</p>
-                    <p>Quantidade: {collection.quantity} KG</p>
-                    {/* Adicione mais detalhes conforme necessário */}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : (
-            <div className="flex flex-col items-center gap-2">
-              <Badge
-                variant="outline"
-                className="flex w-full justify-center px-4 py-2"
-              >
-                <h3 className="text-base">Histórico</h3>
-              </Badge>
-              <p className="text-sm opacity-75">Você ainda não tem pedidos!</p>
+          <div className="flex flex-col items-center gap-2">
+            <Badge
+              variant="outline"
+              className="flex w-full justify-center px-4 py-2"
+            >
+              <h3 className="text-base">Histórico</h3>
+            </Badge>
+            <p className="text-sm opacity-75">Você ainda não tem pedidos!</p>
 
-              <Link href="dashboard/collection">
-                <Button
-                  size="lg"
-                  variant="link"
-                  className="mt-3 flex w-full items-center justify-center gap-3"
-                >
-                  <RecycleIcon size={16} /> Faça um Pedido!
-                </Button>
-              </Link>
-            </div>
-          )}
+            <Link href="dashboard/collection">
+              <Button
+                size="lg"
+                variant="link"
+                className="mt-3 flex w-full items-center justify-center gap-3"
+              >
+                <RecycleIcon size={16} /> Faça um Pedido!
+              </Button>
+            </Link>
+          </div>
         </TabsContent>
       </Tabs>
     </div>
