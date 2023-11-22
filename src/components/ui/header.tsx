@@ -1,16 +1,37 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { Card } from "./card";
-import { Button } from "./button";
-import { HomeIcon, LogOutIcon, MenuIcon, ShellIcon } from "lucide-react";
+import {
+  BellDotIcon,
+  HomeIcon,
+  LogOutIcon,
+  MenuIcon,
+  RecycleIcon,
+  ShellIcon,
+  User2Icon,
+} from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "./sheet";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
-import { Separator } from "./separator";
 import { useRouter } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  Sheet,
+} from "@/components/ui/sheet";
+import { Separator } from "@/components/ui/separator";
 
 export const Header = () => {
   const router = useRouter();
@@ -47,15 +68,64 @@ export const Header = () => {
       </Link>
 
       <div className="flex items-center justify-center gap-4">
-        {status === "unauthenticated" && (
+        {status === "unauthenticated" ? (
           <Button className="font-semibold" onClick={handleLoginClick}>
             Cadastrar
           </Button>
+        ) : (
+          <div className="flex gap-5">
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <BellDotIcon />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Notificações</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="py-2">
+                  <p>Você não possui notificações.</p>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Avatar>
+                  <AvatarFallback>
+                    {data?.user.name?.[0].toUpperCase()}
+                  </AvatarFallback>
+
+                  {data?.user.image && <AvatarImage src={data.user.image} />}
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <Link
+                    href="dashboard/profile"
+                    className="flex items-center gap-2"
+                  >
+                    <User2Icon /> Perfil
+                  </Link>
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator className="mt-2" />
+
+                <DropdownMenuItem className="flex items-center gap-2">
+                  <LogOutIcon /> Sair
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         )}
 
         <Sheet>
           <SheetTrigger asChild>
-            <Button size="icon" variant="outline">
+            <Button
+              size="icon"
+              variant="outline"
+              className="border-none bg-transparent drop-shadow-md"
+            >
               <MenuIcon />
             </Button>
           </SheetTrigger>
@@ -82,6 +152,15 @@ export const Header = () => {
                   <ShellIcon size={16} />
                   Sobre
                 </Button>
+
+                <Separator />
+
+                <Link href="/signin/collector">
+                  <Button className="mt-2 flex w-full justify-center gap-2 ">
+                    <RecycleIcon size={16} />
+                    Torna-se Coletador
+                  </Button>
+                </Link>
               </div>
 
               <div className="flex flex-col gap-2">

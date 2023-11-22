@@ -13,8 +13,9 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { createCollector } from "@/app/actions/createCollector";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LoaderIcon } from "lucide-react";
+import { getCollectorSession } from "@/app/actions/getCollectorSession";
 
 const CollectorSchema = z.object({
   collectionServiceDescription: z.string(),
@@ -42,10 +43,35 @@ export default function CollectorForm() {
   });
   const { data: Session } = useSession();
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRegister, setIsRegister] = useState(false);
+
+  useEffect(() => {
+    const id = Session?.user.id;
+
+    if (!id) return;
+
+    async function getCollection(id: string) {
+      const collector = await getCollectorSession(id);
+
+      collector ? setIsRegister(true) : setIsLoading(false);
+    }
+
+    getCollection(id);
+  });
+
+  useEffect(() => {
+    isRegister &&
+      toast({
+        title: "Você já está cadastrado!",
+        description: "Redirecionamos você para o painel dos coletadores.",
+      });
+
+    if (isRegister) return router.push("/dashboard");
+  }, [isRegister]);
+
   const router = useRouter();
   const { toast } = useToast();
-
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleFormSubmit: SubmitHandler<CollectorFormValues> = async (data) => {
     if (!Session?.user?.id) return;
@@ -79,7 +105,7 @@ export default function CollectorForm() {
       setIsLoading(false);
     }
   };
-  console.log();
+
   return (
     <Form {...form}>
       <form

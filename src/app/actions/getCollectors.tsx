@@ -13,7 +13,7 @@ export const getCollectors = async () => {
         }
       }
     })
-console.log(collectors)
+
     return collectors;
   } catch (error) {
     console.error("Error fetching collectors:", error);
