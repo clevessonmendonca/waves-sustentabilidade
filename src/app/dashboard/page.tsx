@@ -1,7 +1,7 @@
 "use client";
 
-import { Collections } from "../../components/ui/components/collections";
-import { Map } from "../../components/ui/components/maps";
+import { Collections } from "./components/collections";
+import { Map } from "./components/maps";
 import { UserContext } from "../providers/user";
 import Loading from "../loading";
 import { useContext } from "react";

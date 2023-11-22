@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RecycleIcon } from "lucide-react";
 import Link from "next/link";
-import { Separator } from "../separator";
+import { Separator } from "../../../components/ui/separator";
 
 export const Collections = () => {
   return (

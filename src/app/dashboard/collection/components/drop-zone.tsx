@@ -1,7 +1,5 @@
-// MyDropzone.tsx
-import { FC, useCallback, useState } from "react";
+import React, { FC, useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { FolderDownIcon } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
@@ -42,37 +40,22 @@ export const MyDropzone: FC<MyDropzoneProps> = ({ onDrop }) => {
     return allowedTypes.includes(file.type);
   };
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop: onDropCallback,
     accept: {
       "image/png": [".png"],
       "image/jpeg": [".jpg"],
       "image/webp": [".webp"],
     },
-    onDrop: onDropCallback,
   });
 
   return (
-    <Card className="h-48 w-full cursor-pointer">
-      {previewImage ? (
-        <div className="flex h-full flex-col items-center justify-center gap-2">
-          <Image
-            width={0}
-            height={0}
-            sizes="100vw"
-            style={{
-              objectFit: "contain",
-            }}
-            src={previewImage}
-            className="max-h-40 w-full"
-            alt="Preview"
-          />
-        </div>
+    <Card className="h-48 w-full cursor-pointer" {...getRootProps()}>
+      <input {...getInputProps()} />
+      {isDragActive ? (
+        <p>Drop the files here ...</p>
       ) : (
-        <div
-          {...getRootProps()}
-          className="flex h-full flex-col items-center justify-center gap-2"
-        >
-          <input {...getInputProps()} />
+        <div className="flex h-full flex-col items-center justify-center gap-2">
           <FolderDownIcon size={32} />
           <p className="text-sm opacity-75">Arraste a imagem ou Clique aqui</p>
         </div>
