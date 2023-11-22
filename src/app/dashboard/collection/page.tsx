@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { FormField } from "@/components/ui/form-field";
-import { MyDropzone } from "./components/drop-zone";
+// import { MyDropzone } from "./components/drop-zone";
 import { useEffect, useState } from "react";
 import { FileWithPath } from "react-dropzone";
 import { zodResolver } from "@hookform/resolvers/zod";
