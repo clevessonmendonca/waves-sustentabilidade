@@ -4,44 +4,40 @@ import { UserContext } from "@/app/providers/user";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Separator } from "@radix-ui/react-separator";
 import { RecycleIcon } from "lucide-react";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { Separator } from "../separator";
 
 export const Collections = () => {
   const userData = useContext(UserContext);
   const [totalKgCollected, setTotalKgCollected] = useState<number | null>(null);
   const [collectionHistory, setCollectionHistory] = useState<any[]>([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (userData && userData.userData && userData.userData.id) {
-          const personId = userData.userData.id;
-  
-          if (!personId) return;
-  
-          const collector = await prisma.collector.findFirst({
-            where: { personId: personId },
-          });
-  
-          const totalCollected = collector?.kgCollected || 0;
-          setTotalKgCollected(totalCollected);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-  
-    fetchData();
-  }, [userData]);
-  
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       if (userData && userData.userData && userData.userData.id) {
+  //         const personId = userData.userData.id;
 
-  if (!userData || !userData.userData) {
+  //         if (!personId) return;
+
+  //         const collector = await prisma.collector.findFirst({
+  //           where: { personId: personId },
+  //         });
+
+  //         const totalCollected = collector?.kgCollected || 0;
+  //         setTotalKgCollected(totalCollected);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [userData]);
+
+  if (!userData) {
     return <Loading />;
   }
 
