@@ -201,12 +201,14 @@ export default function CollectorList() {
               <Button variant="outline" className="rounded-full py-6">
                 <PhoneIcon />
               </Button>
-              <CollectorInfoDialog
-                user={selectedCollector}
-                onOpen={openModal}
-                distances={distances}
-                onClose={() => setSelectedCollector(null)}
-              />
+              {selectedCollector && (
+                <CollectorInfoDialog
+                  user={selectedCollector}
+                  onOpen={openModal}
+                  distances={distances}
+                  onClose={() => setSelectedCollector(null)}
+                />
+              )}
             </div>
           </Card>
         ))}
