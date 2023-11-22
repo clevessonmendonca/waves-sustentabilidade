@@ -1,21 +1,12 @@
 "use client";
-import Loading from "@/app/loading";
-import { UserContext } from "@/app/providers/user";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RecycleIcon } from "lucide-react";
 import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
 import { Separator } from "../separator";
 
 export const Collections = () => {
-  const userData = useContext(UserContext);
-
-  if (!userData) {
-    return <Loading />;
-  }
-
   return (
     <div className="mx-auto max-w-screen-xl">
       <div className="mb-6 mt-5 flex flex-col justify-center px-5">
