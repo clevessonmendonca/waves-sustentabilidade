@@ -159,12 +159,9 @@ export default function FormCollection() {
 
         <Separator className="my-4" />
 
-        <MyDropzone
-          onDrop={(acceptedFiles) => {
-            console.log("Imagem registrada:", acceptedFiles[0]);
-            form.setValue("image", acceptedFiles[0]);
-          }}
-        />
+        {/* <MyDropzone
+          onDrop={(acceptedFiles) => form.setValue("image", acceptedFiles[0])}
+        /> */}
 
         <div className="flex w-full items-end justify-end">
           <Button
