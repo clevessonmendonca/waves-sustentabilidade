@@ -8,12 +8,9 @@ import { RecycleIcon } from "lucide-react";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { Separator } from "../separator";
-import { any } from "zod";
 
 export const Collections = () => {
   const userData = useContext(UserContext);
-  const [totalKgCollected, setTotalKgCollected] = useState(null);
-  const [collectionHistory, setCollectionHistory] = useState([]);
 
   if (!userData) {
     return <Loading />;
@@ -54,26 +51,15 @@ export const Collections = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="collections" className="flex flex-col gap-4">
-          {totalKgCollected !== null ? (
-            <div className="flex flex-col items-center gap-2">
-              <Badge
-                variant="outline"
-                className="flex w-full justify-center px-4 py-2"
-              >
-                <h3 className="text-base">Solicitadas</h3>
-              </Badge>
-              {totalKgCollected > 0 ? (
-                <>
-                  <h4 className="text-sm opacity-75">Total de KG coletados:</h4>
-                  <span className="font-bold"> {totalKgCollected} KG</span>
-                </>
-              ) : (
-                <p className="text-sm opacity-75">
-                  Você ainda não tem pedidos!
-                </p>
-              )}
-            </div>
-          ) : null}
+          <div className="flex flex-col items-center gap-2">
+            <Badge
+              variant="outline"
+              className="flex w-full justify-center px-4 py-2"
+            >
+              <h3 className="text-base">Solicitadas</h3>
+            </Badge>
+            <p className="text-sm opacity-75">Você ainda não tem pedidos!</p>
+          </div>
 
           <div className="flex flex-col items-center gap-2">
             <Badge
