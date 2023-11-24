@@ -4,8 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { FormField } from "@/components/ui/form-field";
-// import { MyDropzone } from "./components/drop-zone";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FileWithPath } from "react-dropzone";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -17,6 +16,7 @@ import { WeekDayRadioGroup } from "./components/weekday-radio-group";
 import { MaterialType } from "./components/material-type";
 import { LoaderIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { Dropzone } from "./components/drop-zone";
 
 export interface FormCollectionValues {
   materialType: string;
@@ -109,6 +109,12 @@ export default function FormCollection() {
     }
   };
 
+  const handleFileUpload = (files: File[]) => {
+    if (!files) return;
+
+    form.setValue("image", files[0]);
+  };
+
   return (
     <Form {...form}>
       <form
@@ -159,9 +165,7 @@ export default function FormCollection() {
 
         <Separator className="my-4" />
 
-        {/* <MyDropzone
-          onDrop={(acceptedFiles) => form.setValue("image", acceptedFiles[0])}
-        /> */}
+        <Dropzone onFileUpload={handleFileUpload} />
 
         <div className="flex w-full items-end justify-end">
           <Button

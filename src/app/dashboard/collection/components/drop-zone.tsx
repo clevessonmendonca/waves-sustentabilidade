@@ -1,65 +1,70 @@
-// import React, { FC, useCallback, useState } from "react";
-// import { useDropzone } from "react-dropzone";
-// import { Card } from "@/components/ui/card";
-// import { FolderDownIcon } from "lucide-react";
-// import { useToast } from "@/components/ui/use-toast";
+// Dropzone component
+import { Card } from "@/components/ui/card";
+import { toast } from "@/components/ui/use-toast";
+import { FolderDownIcon } from "lucide-react";
+import Image from "next/image";
+import React, { useCallback, useState } from "react";
+import { useDropzone } from "react-dropzone";
 
-// interface MyDropzoneProps {
-//   onDrop: (files: File[]) => void;
-// }
+interface DropzoneProps {
+  onFileUpload: (files: File[]) => void;
+}
 
-// export const MyDropzone: FC<MyDropzoneProps> = ({ onDrop }) => {
-//   const [previewImage, setPreviewImage] = useState<string | null>(null);
-//   const { toast } = useToast();
+export const Dropzone: React.FC<DropzoneProps> = ({ onFileUpload }) => {
+  const [files, setFiles] = useState<any>([]);
 
-//   const onDropCallback = useCallback(
-//     (acceptedFiles: File[]) => {
-//       if (acceptedFiles.length > 0) {
-//         const acceptedFile = acceptedFiles[0];
+  const handleFileUpload = useCallback(
+    (acceptedFiles: File[]) => {
+      setFiles(
+        acceptedFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          }),
+        ),
+      );
+      onFileUpload(acceptedFiles);
+    },
+    [onFileUpload],
+  );
 
-//         if (!isValidImage(acceptedFile)) {
-//           toast({
-//             title: "Formato Inválido!",
-//             description:
-//               "Por favor, selecione uma imagem válida (PNG, JPG ou WebP)",
-//             variant: "destructive",
-//           });
-//           return;
-//         }
+  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+    maxFiles: 2,
+    accept: {
+      "image/png": [".png", "jpg", "jpeg"],
+    },
+    onDrop: handleFileUpload,
+  });
 
-//         const imageUrl = URL.createObjectURL(acceptedFile);
-//         setPreviewImage(imageUrl);
-//       }
-//       onDrop(acceptedFiles);
-//     },
-//     [onDrop, toast],
-//   );
+  const Preview = files.map((file: any) => (
+    <div key={file.name}>
+      <Image
+        width={0}
+        height={0}
+        sizes="100vw"
+        className="h-full max-h-40 w-full"
+        src={file.preview}
+        title={file.name}
+        alt={file.name}
+      />
+    </div>
+  ));
 
-//   const isValidImage = (file: File) => {
-//     const allowedTypes = ["image/png", "image/jpeg", "image/webp"];
-//     return allowedTypes.includes(file.type);
-//   };
-
-//   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-//     onDrop: onDropCallback,
-//     accept: {
-//       "image/png": [".png"],
-//       "image/jpeg": [".jpg"],
-//       "image/webp": [".webp"],
-//     },
-//   });
-
-//   return (
-//     <Card className="h-48 w-full cursor-pointer" {...getRootProps()}>
-//       <input {...getInputProps()} />
-//       {isDragActive ? (
-//         <p>Drop the files here ...</p>
-//       ) : (
-//         <div className="flex h-full flex-col items-center justify-center gap-2">
-//           <FolderDownIcon size={32} />
-//           <p className="text-sm opacity-75">Arraste a imagem ou Clique aqui</p>
-//         </div>
-//       )}
-//     </Card>
-//   );
-// };
+  return (
+    <Card
+      {...getRootProps({
+        className:
+          "flex h-48 w-full cursor-pointer items-center justify-center border-2 border-dashed border-gray-300",
+      })}
+    >
+      <input {...getInputProps()} />
+      {acceptedFiles.length === 0 ? (
+        <p className="flex flex-col items-center gap-4 text-sm text-gray-600 opacity-75">
+          <FolderDownIcon size={32} className="text-gray-400" />
+          Drop some files here ...
+        </p>
+      ) : (
+        <div>{Preview}</div>
+      )}
+    </Card>
+  );
+};
