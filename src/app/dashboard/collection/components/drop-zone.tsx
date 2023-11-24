@@ -1,38 +1,43 @@
-// Dropzone component
 import { Card } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
 import { FolderDownIcon } from "lucide-react";
 import Image from "next/image";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 
 interface DropzoneProps {
   onFileUpload: (files: File[]) => void;
 }
 
-export const Dropzone: React.FC<DropzoneProps> = ({ onFileUpload }) => {
+export const Dropzone = ({ onFileUpload }: DropzoneProps) => {
   const [files, setFiles] = useState<any>([]);
+  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+    maxFiles: 2,
+    accept: {
+      "image/png": [".png"],
+      "text/html": [".html", ".htm"],
+    },
+    onDrop: (acceptedFiles) => {
+      const acceptedFile = acceptedFiles[0];
 
-  const handleFileUpload = useCallback(
-    (acceptedFiles: File[]) => {
+      if (!acceptedFile) {
+        toast({
+          title: "Formato Inválido!",
+          description:
+            "Por favor, selecione uma imagem válida (PNG, JPG ou WebP)",
+          variant: "destructive",
+        });
+        return;
+      }
+
       setFiles(
         acceptedFiles.map((file) =>
           Object.assign(file, {
             preview: URL.createObjectURL(file),
-          }),
-        ),
+          })
+        )
       );
-      onFileUpload(acceptedFiles);
     },
-    [onFileUpload],
-  );
-
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
-    maxFiles: 2,
-    accept: {
-      "image/png": [".png", "jpg", "jpeg"],
-    },
-    onDrop: handleFileUpload,
   });
 
   const Preview = files.map((file: any) => (
@@ -51,10 +56,7 @@ export const Dropzone: React.FC<DropzoneProps> = ({ onFileUpload }) => {
 
   return (
     <Card
-      {...getRootProps({
-        className:
-          "flex h-48 w-full cursor-pointer items-center justify-center border-2 border-dashed border-gray-300",
-      })}
+      {...getRootProps({ className: "flex h-48 w-full cursor-pointer items-center justify-center border-2 border-dashed border-gray-300" })}
     >
       <input {...getInputProps()} />
       {acceptedFiles.length === 0 ? (
