@@ -109,12 +109,6 @@ export default function FormCollection() {
     }
   };
 
-  const handleFileUpload = (files: File[]) => {
-    if (!files) return;
-
-    form.setValue("image", files[0]);
-  };
-
   return (
     <Form {...form}>
       <form
@@ -165,7 +159,7 @@ export default function FormCollection() {
 
         <Separator className="my-4" />
 
-        <Dropzone onFileUpload={handleFileUpload} />
+        <Dropzone />
 
         <div className="flex w-full items-end justify-end">
           <Button
