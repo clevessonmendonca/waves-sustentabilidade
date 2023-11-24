@@ -32,10 +32,11 @@ export const HowItWork = () => {
             <span className="text-xs text-primary">Passo 1</span>
             <h3 className="text-lg font-bold">Coleta Consciente</h3>
             <p className="text-sm opacity-75 ">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla,
-              debitis eum natus ullam at temporibus quo aspernatur quasi earum
-              distinctio perferendis expedita dolores quisquam aut ipsum cum
-              neque sint. Placeat.
+              Na Waves, acreditamos na importância da coleta consciente como
+              ponto de partida para a sustentabilidade. Promovemos a
+              conscientização sobre a separação adequada de resíduos e
+              incentivamos práticas eco-friendly. A coleta consciente é o
+              primeiro passo para um futuro mais sustentável.
             </p>
           </div>
 
@@ -53,14 +54,41 @@ export const HowItWork = () => {
         </div>
 
         <div className="flex flex-col items-center justify-center gap-8 px-5 md:flex-row">
-          <div className="mt-12 flex max-w-sm flex-col gap-2 md:order-2">
-            <span className="text-xs text-primary">Passo 1</span>
-            <h3 className="text-lg font-bold">Coleta Consciente</h3>
+          <div className="mt-12 flex max-w-sm flex-col gap-2 md:order-1">
+            <span className="text-xs text-primary">Passo 2</span>
+            <h3 className="text-lg font-bold">Reciclagem Responsável</h3>
             <p className="text-sm opacity-75 ">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla,
-              debitis eum natus ullam at temporibus quo aspernatur quasi earum
-              distinctio perferendis expedita dolores quisquam aut ipsum cum
-              neque sint. Placeat.
+              Comprometemo-nos com a reciclagem responsável como parte
+              fundamental do nosso processo. Trabalhamos para desenvolver
+              soluções inovadoras que minimizem o impacto ambiental e promovam a
+              reutilização de materiais. A reciclagem responsável é a nossa
+              contribuição para a preservação do planeta.
+            </p>
+          </div>
+
+          <Image
+            src={"/banner-home.webp"}
+            width={0}
+            height={0}
+            sizes="100vw"
+            style={{
+              objectFit: "contain",
+            }}
+            alt="Waves Sustentabilidades"
+            className="mt-4 h-full max-h-[200px] w-full"
+          />
+        </div>
+
+        <div className="flex flex-col items-center justify-center gap-8 px-5 md:flex-row">
+          <div className="mt-12 flex max-w-sm flex-col gap-2">
+            <span className="text-xs text-primary">Passo 3</span>
+            <h3 className="text-lg font-bold">Envolvimento Comunitário</h3>
+            <p className="text-sm opacity-75 ">
+              Na Waves, entendemos que a mudança real ocorre quando a comunidade
+              se une. Encorajamos o envolvimento comunitário, promovendo a
+              educação ambiental e apoiando projetos locais. Através do nosso
+              compromisso com a comunidade, buscamos criar um impacto duradouro
+              e inspirar outros a se juntarem à nossa jornada sustentável.
             </p>
           </div>
 
@@ -74,31 +102,6 @@ export const HowItWork = () => {
             }}
             alt="Waves Sustentabilidades"
             className="mt-4 h-full max-h-[200px] w-full md:order-1"
-          />
-        </div>
-
-        <div className="flex flex-col items-center justify-center gap-8 px-5 md:flex-row">
-          <div className="mt-12 flex max-w-sm flex-col gap-2">
-            <span className="text-xs text-primary">Passo 1</span>
-            <h3 className="text-lg font-bold">Coleta Consciente</h3>
-            <p className="text-sm opacity-75 ">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla,
-              debitis eum natus ullam at temporibus quo aspernatur quasi earum
-              distinctio perferendis expedita dolores quisquam aut ipsum cum
-              neque sint. Placeat.
-            </p>
-          </div>
-
-          <Image
-            src={"/banner-home.webp"}
-            width={0}
-            height={0}
-            sizes="100vw"
-            style={{
-              objectFit: "contain",
-            }}
-            alt="Waves Sustentabilidades"
-            className="mt-4 h-full max-h-[200px] w-full"
           />
         </div>
       </div>
