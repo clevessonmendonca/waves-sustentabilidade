@@ -33,6 +33,14 @@ import {
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 
+export const handleLoginClick = async () => {
+  await signIn("google", { callbackUrl: "/signin" });
+};
+
+export const handleLogoutClick = async () => {
+  await signOut();
+};
+
 export const Header = () => {
   const router = useRouter();
   const { status, data } = useSession();
@@ -43,13 +51,6 @@ export const Header = () => {
     }
   }, [router, status]);
 
-  const handleLoginClick = async () => {
-    await signIn("google", { callbackUrl: "/signin" });
-  };
-
-  const handleLogoutClick = async () => {
-    await signOut();
-  };
 
   return (
     <Card className="mx-auto flex w-full max-w-screen-xl items-center justify-between gap-3 border-none bg-transparent p-[1.875rem] shadow-none">
@@ -111,7 +112,7 @@ export const Header = () => {
 
                 <DropdownMenuSeparator className="mt-2" />
 
-                <DropdownMenuItem className="flex items-center gap-2">
+                <DropdownMenuItem onClick={handleLogoutClick} className="flex items-center gap-2">
                   <LogOutIcon /> Sair
                 </DropdownMenuItem>
               </DropdownMenuContent>

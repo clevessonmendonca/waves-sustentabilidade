@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { handleLoginClick } from "@/components/ui/header";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -34,9 +35,9 @@ export const CTASection = () => {
             Faça parte do nosso movimento de sustentabilidade. Ajude a preservar
             o meio ambiente e aumentar a reciclagem.
           </p>
-          <Link href="/">
-            <Button size="lg">Cadastra-se Agora</Button>
-          </Link>
+
+            <Button  onClick={handleLoginClick} className="max-w-[280px]" size="lg">Cadastra-se Agora</Button>
+
           <span className="mt-2 text-xs opacity-75">
             +300 usuários cadastrados.
           </span>
