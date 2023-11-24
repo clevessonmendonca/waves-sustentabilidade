@@ -14,9 +14,10 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { WeekDayRadioGroup } from "./components/weekday-radio-group";
 import { MaterialType } from "./components/material-type";
-import { LoaderIcon } from "lucide-react";
+import { FolderDownIcon, LoaderIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Card } from "@/components/ui/card";
+import Image from "next/image";
 
 export interface FormCollectionValues {
   materialType: string;
@@ -74,6 +75,7 @@ export default function FormCollection() {
   const { toast } = useToast();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [files, setFiles] = useState<any>([]);
 
   const handleFormSubmit: SubmitHandler<FormCollectionValues> = async (
     data,
@@ -108,6 +110,22 @@ export default function FormCollection() {
       setIsLoading(false);
     }
   };
+
+  const isValidImage = (file: File) => {
+    const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
+    return allowedTypes.includes(file.type);
+  };
+
+  const Preview = files.map((file: any) => (
+    <div key={file.name} className="relative h-full max-h-40 w-full">
+      <Image
+        layout="fill"
+        objectFit="cover"
+        src={file.preview}
+        alt={file.name}
+      />
+    </div>
+  ));
 
   return (
     <Form {...form}>
@@ -159,7 +177,31 @@ export default function FormCollection() {
 
         <Separator className="my-4" />
 
-        <Dropzone onDrop={(acceptedFiles) => console.log(acceptedFiles)}>
+        <Dropzone
+          onDrop={(acceptedFiles) => {
+            const acceptedFile = acceptedFiles[0];
+
+            if (!acceptedFile || !isValidImage(acceptedFile)) {
+              toast({
+                title: "Formato Inválido!",
+                description:
+                  "Por favor, selecione uma imagem válida (PNG, JPG ou JPEG)",
+                variant: "destructive",
+              });
+              return;
+            }
+
+            setFiles(
+              acceptedFiles.map((file) =>
+                Object.assign(file, {
+                  preview: URL.createObjectURL(file),
+                }),
+              ),
+            );
+
+            form.setValue("image", acceptedFiles[0]);
+          }}
+        >
           {({ getRootProps, getInputProps }) => (
             <section>
               <Card
@@ -167,7 +209,12 @@ export default function FormCollection() {
                 className="relative flex h-48 w-full cursor-pointer items-center justify-center overflow-hidden border-2 border-dashed border-gray-300"
               >
                 <input {...getInputProps()} />
-                <p>Drag drop some files here, or click to select files</p>
+                <div className="flex flex-col items-center gap-4 text-sm text-gray-600 opacity-75">
+                  <FolderDownIcon size={32} className="text-gray-400" />
+                  <p>
+                    Arraste e solte os arquivos aqui ou clique para selecionar.
+                  </p>
+                </div>
               </Card>
             </section>
           )}
