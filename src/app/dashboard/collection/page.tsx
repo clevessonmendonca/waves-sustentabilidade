@@ -16,6 +16,7 @@ import { WeekDayRadioGroup } from "./components/weekday-radio-group";
 import { MaterialType } from "./components/material-type";
 import { LoaderIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { Card } from "@/components/ui/card";
 
 export interface FormCollectionValues {
   materialType: string;
@@ -161,10 +162,13 @@ export default function FormCollection() {
         <Dropzone onDrop={(acceptedFiles) => console.log(acceptedFiles)}>
           {({ getRootProps, getInputProps }) => (
             <section>
-              <div {...getRootProps()}>
+              <Card
+                {...getRootProps()}
+                className="relative flex h-48 w-full cursor-pointer items-center justify-center overflow-hidden border-2 border-dashed border-gray-300"
+              >
                 <input {...getInputProps()} />
                 <p>Drag drop some files here, or click to select files</p>
-              </div>
+              </Card>
             </section>
           )}
         </Dropzone>
