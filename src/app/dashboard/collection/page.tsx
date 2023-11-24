@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { FormField } from "@/components/ui/form-field";
 import { useState } from "react";
-import { FileWithPath } from "react-dropzone";
+import Dropzone, { FileWithPath } from "react-dropzone";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { createCollectionSchedule } from "@/app/actions/createCollectionSchedule";
@@ -16,7 +16,6 @@ import { WeekDayRadioGroup } from "./components/weekday-radio-group";
 import { MaterialType } from "./components/material-type";
 import { LoaderIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { Dropzone } from "./components/drop-zone";
 
 export interface FormCollectionValues {
   materialType: string;
@@ -159,7 +158,16 @@ export default function FormCollection() {
 
         <Separator className="my-4" />
 
-        <Dropzone />
+        <Dropzone onDrop={(acceptedFiles) => console.log(acceptedFiles)}>
+          {({ getRootProps, getInputProps }) => (
+            <section>
+              <div {...getRootProps()}>
+                <input {...getInputProps()} />
+                <p>Drag drop some files here, or click to select files</p>
+              </div>
+            </section>
+          )}
+        </Dropzone>
 
         <div className="flex w-full items-end justify-end">
           <Button
