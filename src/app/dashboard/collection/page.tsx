@@ -82,6 +82,15 @@ export default function FormCollection() {
   ) => {
     if (!Session?.user?.id) return;
 
+    if (!isValidTimeRange(data.collectionTime.startTime, data.collectionTime.endTime)) {
+      toast({
+        title: "Erro no Horário",
+        description: "O horário de início deve ser menor que o horário de fim",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       setIsLoading(true);
 
@@ -111,16 +120,23 @@ export default function FormCollection() {
     }
   };
 
+  const isValidTimeRange = (startTime: string, endTime: string) => {
+    const start = new Date(`2000-01-01 ${startTime}`);
+    const end = new Date(`2000-01-01 ${endTime}`);
+    return start < end;
+  };
+
   const isValidImage = (file: File) => {
     const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
     return allowedTypes.includes(file.type);
   };
 
   const Preview = files.map((file: any) => (
-    <div key={file.name} className="relative h-full max-h-40 w-full">
+    <div key={file.name}>
       <Image
-        layout="fill"
-        objectFit="cover"
+        width={0}
+        height={0}
+        className="h-full max-h-40 w-full"
         src={file.preview}
         alt={file.name}
       />
@@ -209,12 +225,17 @@ export default function FormCollection() {
                 className="relative flex h-48 w-full cursor-pointer items-center justify-center overflow-hidden border-2 border-dashed border-gray-300"
               >
                 <input {...getInputProps()} />
-                <div className="flex flex-col items-center gap-4 text-sm text-gray-600 opacity-75">
-                  <FolderDownIcon size={32} className="text-gray-400" />
-                  <p>
-                    Arraste e solte os arquivos aqui ou clique para selecionar.
-                  </p>
-                </div>
+                {files.length === 0 ? (
+                  <div className="flex flex-col items-center gap-4 text-sm text-gray-600 opacity-75">
+                    <FolderDownIcon size={32} className="text-gray-400" />
+                    <p>
+                      Arraste e solte os arquivos aqui ou clique para
+                      selecionar.
+                    </p>
+                  </div>
+                ) : (
+                  <div>{Preview}</div>
+                )}
               </Card>
             </section>
           )}
