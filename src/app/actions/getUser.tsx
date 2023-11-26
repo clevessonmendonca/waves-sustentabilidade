@@ -4,16 +4,16 @@ import { prismaClient } from "@/lib/prisma";
 
 export const getUser = async (id: string) => {
   try {
-    const user = await prismaClient.person.findFirst({
+    const person = await prismaClient.person.findFirst({
       where: {
         userId: id,
       },
       include: {
-        recycler: true
-      }
+        recycler: true,
+      },
     });
-
-    return user;
+    console.log(person);
+    return person;
   } catch (error) {
     console.error("Error fetching user:", error);
     throw error;

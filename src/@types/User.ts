@@ -42,7 +42,7 @@ export interface Recycler {
   id: string;
   recyclingServiceDescription: string;
   kgRecycled: number;
-  socialDonations: boolean;
+  socialDonations: boolean | null;
   donationDetails: string | null;
   personId: string;
 }
