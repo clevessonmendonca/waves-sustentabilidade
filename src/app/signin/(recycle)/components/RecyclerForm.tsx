@@ -28,6 +28,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { SelectSingleEventHandler } from "react-day-picker";
+import axios from "axios";
 
 export const formSchema = z.object({
   name: z
@@ -87,6 +88,25 @@ export const RecyclerForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [date, setDate] = useState<Date>();
 
+  const validateCEP = async (cep: string) => {
+    try {
+      const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = response.data;
+
+      if (data.erro) {
+        return "CEP não encontrado.";
+      } else {
+        setValue("city", data.localidade);
+        setValue("uf", data.uf);
+
+        return undefined; // CEP válido
+      }
+    } catch (error) {
+      console.error("Erro ao validar CEP:", error);
+      return "Erro ao validar CEP.";
+    }
+  };
+
   const handleNextStep = async () => {
     let fieldsToValidate: Array<keyof RecycleFormValues> = [];
 
@@ -94,6 +114,18 @@ export const RecyclerForm = () => {
       fieldsToValidate = ["name", "phone", "cpfCnpj", "sex", "birthDate"];
     } else if (currentStep === 1) {
       fieldsToValidate = ["cep", "city", "uf"];
+
+      if (fieldsToValidate.includes("cep")) {
+        const isValidCEP = await validateCEP(watch("cep"));
+
+        if (isValidCEP) {
+          toast({
+            title: "Erro no CEP",
+            description: isValidCEP,
+          });
+          return;
+        }
+      }
     } else if (currentStep === 2) {
       fieldsToValidate = [
         "timeInMarket",
