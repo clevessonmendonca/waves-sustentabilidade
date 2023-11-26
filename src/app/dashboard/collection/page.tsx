@@ -31,7 +31,7 @@ export interface FormCollectionValues {
   image?: FileWithPath | undefined;
 }
 
-const FormCollectionSchema = z.object({
+export const FormCollectionSchema = z.object({
   materialType: z
     .string()
     .min(1, { message: "Tipo de Material é um campo obrigatório" }),
@@ -51,18 +51,7 @@ const FormCollectionSchema = z.object({
     .min(1, { message: "Dia da Semana é um campo obrigatório" })
     .max(255, { message: "Dia da Semana deve ter no máximo 255 caracteres" }),
   description: z.string().optional(),
-  image: z
-    .object({
-      path: z.string(),
-      name: z.string(),
-      lastModified: z.number(),
-      lastModifiedDate: z.date(),
-      webkitRelativePath: z.string(),
-      size: z.number(),
-      type: z.string(),
-    })
-    .nullable()
-    .optional(),
+  image: z.string().nullable().optional(),
 });
 
 export default function FormCollection() {
@@ -82,7 +71,12 @@ export default function FormCollection() {
   ) => {
     if (!Session?.user?.id) return;
 
-    if (!isValidTimeRange(data.collectionTime.startTime, data.collectionTime.endTime)) {
+    if (
+      !isValidTimeRange(
+        data.collectionTime.startTime,
+        data.collectionTime.endTime,
+      )
+    ) {
       toast({
         title: "Erro no Horário",
         description: "O horário de início deve ser menor que o horário de fim",
@@ -215,7 +209,7 @@ export default function FormCollection() {
               ),
             );
 
-            form.setValue("image", acceptedFiles[0]);
+            form.setValue("image", files[0].preview);
           }}
         >
           {({ getRootProps, getInputProps }) => (

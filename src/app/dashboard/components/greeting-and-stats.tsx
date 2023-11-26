@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Loading from "@/app/loading";
 import { UserContext } from "@/app/providers/user";
@@ -22,12 +22,12 @@ export const GreetingAndStats = () => {
       </h1>
 
       <div>
-        <Card className="flex items-center justify-center gap-4 border-none">
+        <Card className="flex items-center justify-center gap-4 border-none bg-transparent">
           <span className="rounded-xl bg-accent p-5">
             <ArchiveRestoreIcon size={26} />
           </span>
           <div className="flex flex-col justify-between gap-4">
-            <h3 className="opacity-75 text-sm">Quilos coletado</h3>
+            <h3 className="text-sm opacity-75">Quilos coletado</h3>
             <p className="text-xl font-medium">
               {person?.recycler?.map((recycler) => recycler.kgRecycled)} Kg
             </p>

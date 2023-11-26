@@ -9,7 +9,7 @@ export const HistoryStats = () => {
   return (
     <Tabs defaultValue="collections" className="mb-12 mt-5 flex flex-col px-5">
       <TabsList>
-        <TabsTrigger value="collections" className="w-full">
+        <TabsTrigger value="collections" className="w-full bg-zinc-800">
           Coletas
         </TabsTrigger>
         <TabsTrigger value="history" className="w-full">
