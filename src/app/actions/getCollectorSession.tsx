@@ -12,7 +12,7 @@ export const getCollectorSession = async (id: string) => {
         collector: true,
       },
     });
-
+console.log(collector)
     return collector;
   } catch (error) {
     console.error("Error fetching collectors:", error);

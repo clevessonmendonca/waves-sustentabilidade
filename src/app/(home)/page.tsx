@@ -1,18 +1,11 @@
-"use client";
-
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { HowItWork } from "./components/how-it-work";
-import { ArrowRightIcon } from "lucide-react";
-import Link from "next/link";
 import { ContactForm } from "./components/contact";
 import { CTASection } from "./components/cta-section";
 import { ImpactStat } from "./components/impact-stat";
-import { useSession } from "next-auth/react";
+import { HeroInfo } from "./components/hero-info";
 
 export default function Home() {
-  const { data: Session } = useSession();
-
   return (
     <div>
       <div className="relative">
@@ -32,37 +25,7 @@ export default function Home() {
           <span className="absolute -z-10 h-screen max-h-[80vh] w-full max-w-screen-2xl bg-gradient-to-b from-transparent from-30% via-background to-background" />
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-center gap-2 px-5">
-          <h1 className="max-w-md px-5 text-center text-3xl font-bold drop-shadow-md">
-            Seja uma <span className="text-primary">Ponte</span> para salvar os
-            Oceanos!
-          </h1>
-          <p className="max-w-sm text-center text-xs drop-shadow-lg">
-            Unindo forças para limpar e proteger os tesouros subaquáticos do
-            nosso planeta.
-          </p>
-
-          <div className="mt-5 flex gap-4">
-            {Session?.user ? (
-              <Link href="/dashboard">
-                <Button className="shadow-lg">Ir para o painel</Button>
-              </Link>
-            ) : (
-              <Link href="/signin">
-                <Button className="shadow-lg">Salve o oceano</Button>
-              </Link>
-            )}
-            <Link href="#about">
-              <Button
-                variant="outline"
-                className="flex gap-2 border-none bg-transparent"
-              >
-                Saiba mais
-                <ArrowRightIcon size={12} />
-              </Button>
-            </Link>
-          </div>
-        </div>
+        <HeroInfo />
       </div>
 
       <HowItWork />

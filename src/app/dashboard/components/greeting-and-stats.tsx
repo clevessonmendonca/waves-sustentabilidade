@@ -1,13 +1,31 @@
 "use client";
 
+import { getCollectionSchedules } from "@/app/actions/getCollectionSchedules";
 import Loading from "@/app/loading";
 import { UserContext } from "@/app/providers/user";
 import { Card } from "@/components/ui/card";
-import { ArchiveRestoreIcon } from "lucide-react";
-import React, { useContext } from "react";
+import { ArchiveRestoreIcon, MedalIcon, PackageOpenIcon } from "lucide-react";
+import React, { useContext, useEffect, useState } from "react";
 
 export const GreetingAndStats = () => {
   const userData = useContext(UserContext);
+  const [scheduleLength, setSchedules] = useState(0);
+
+  useEffect(() => {
+    const fetchCollectionSchedule = async () => {
+      userData?.userData?.recycler.map(async (recycler) => {
+        const schedule = await getCollectionSchedules(recycler.id);
+
+        if (!schedule) return;
+
+        setSchedules(schedule.length);
+      });
+    };
+
+    if (scheduleLength > 0) return;
+
+    fetchCollectionSchedule();
+  }, [userData]);
 
   if (!userData) {
     return <Loading />;
@@ -35,13 +53,16 @@ export const GreetingAndStats = () => {
         </Card>
         <Card className="flex items-center gap-4 border-none bg-transparent md:justify-center">
           <span className="rounded-xl bg-accent p-5">
-            <ArchiveRestoreIcon size={26} />
+            <PackageOpenIcon size={26} />
           </span>
           <div className="flex flex-col justify-between gap-4">
-            <h3 className="text-sm opacity-75">Quilos coletado</h3>
-            <p className="text-xl font-medium">
-              {person?.recycler?.map((recycler) => recycler.kgRecycled)} Kg
-            </p>
+            <h3 className="text-sm opacity-75">Total de Coletas</h3>
+            <div className="flex items-end justify-between gap-16">
+              <p className="text-xl font-medium">{scheduleLength}</p>
+              <span className="flex gap-1 text-xs text-green-500">
+                <MedalIcon size={16} /> 2
+              </span>
+            </div>
           </div>
         </Card>
       </div>

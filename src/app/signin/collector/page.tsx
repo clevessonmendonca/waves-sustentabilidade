@@ -54,7 +54,9 @@ export default function CollectorForm() {
     async function getCollection(id: string) {
       const collector = await getCollectorSession(id);
 
-      collector ? setIsRegister(true) : setIsLoading(false);
+      collector?.collector.length !== 0
+        ? setIsRegister(true)
+        : setIsLoading(false);
     }
 
     getCollection(id);
