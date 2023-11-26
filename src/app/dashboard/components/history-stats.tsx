@@ -19,7 +19,7 @@ import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 import { CollectionSchedule } from "@prisma/client";
 import { getCollectionSchedules } from "@/app/actions/getCollectionSchedules";
-import { Card, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 export const HistoryStats = () => {
@@ -46,11 +46,14 @@ export const HistoryStats = () => {
   }
 
   function formatDate(dateString: Date) {
-    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
     return new Date(dateString).toLocaleDateString(undefined, options);
   }
-  
-  
+
   return (
     <Tabs defaultValue="collections" className="mb-12 mt-5 flex flex-col px-5">
       <TabsList>
@@ -96,8 +99,8 @@ export const HistoryStats = () => {
               <p className="text-sm opacity-75">Você ainda não tem pedidos!</p>
             ) : (
               <ul className="w-full">
-                <ScrollArea className="max-h-40">
-                  <div className="flex h-full max-h-40 flex-col gap-4">
+                <ScrollArea className="max-h-48">
+                  <div className="flex h-full max-h-48 flex-col gap-4">
                     {schedules.map((schedule) => (
                       <Card key={schedule.id} className="px-5 py-4">
                         <li className="flex flex-col gap-2">
@@ -125,39 +128,41 @@ export const HistoryStats = () => {
                               ) : null}
                             </div>
                           </CardHeader>
-                          <div>
-                            <span className="flex items-center gap-2 text-sm">
-                              <CalendarDays size={18} />
-                              Dia da Semana
-                            </span>
-                            <p>{schedule.dayOfWeek}</p>
-                          </div>
-                          <div>
-                            <span className="flex items-center gap-2 text-sm">
-                              <Clock10Icon size={18} />
-                              Horário
-                            </span>
-                            <p>
-                              Das {schedule.collectionStartTime} às{" "}
-                              {schedule.collectionEndTime}
-                            </p>
-                          </div>
-                          <div>
-                            <span className="flex items-center gap-2 text-sm">
-                              <BoxIcon size={18} />
-                              Quantidade (kg)
-                            </span>
-                            <p>{schedule.quantityKg} Kg</p>
-                          </div>
+                          <CardContent className="grid grid-cols-2 gap-2 p-0 text-xs">
+                            <div>
+                              <span className="flex items-center gap-2 text-sm">
+                                <CalendarDays size={18} />
+                                Dia da Semana
+                              </span>
+                              <p>{schedule.dayOfWeek}</p>
+                            </div>
+                            <div>
+                              <span className="flex items-center gap-2 text-sm">
+                                <Clock10Icon size={18} />
+                                Horário
+                              </span>
+                              <p>
+                                Das {schedule.collectionStartTime} às{" "}
+                                {schedule.collectionEndTime}
+                              </p>
+                            </div>
+                            <div>
+                              <span className="flex items-center gap-2 text-sm">
+                                <BoxIcon size={18} />
+                                Quantidade (kg)
+                              </span>
+                              <p>{schedule.quantityKg} Kg</p>
+                            </div>
 
-                          <div>
-                            <span className="flex items-center gap-2 text-sm">
-                              <CalendarIcon size={18} />
-                              Data
-                            </span>
-                            {/* Use a função formatDate para formatar a data conforme necessário */}
-                            <p>{formatDate(schedule.date)}</p>
-                          </div>
+                            <div>
+                              <span className="flex items-center gap-2 text-sm">
+                                <CalendarIcon size={18} />
+                                Data
+                              </span>
+                              {/* Use a função formatDate para formatar a data conforme necessário */}
+                              <p>{formatDate(schedule.date)}</p>
+                            </div>
+                          </CardContent>
                         </li>
                       </Card>
                     ))}
@@ -166,18 +171,19 @@ export const HistoryStats = () => {
               </ul>
             )
           ) : (
-            <p className="text-sm opacity-75">Você ainda não tem pedidos!</p>
+            <>
+              <p className="text-sm opacity-75">Você ainda não tem pedidos!</p>
+              <Link href="dashboard/collection">
+                <Button
+                  size="lg"
+                  variant="link"
+                  className="mt-3 flex w-full items-center justify-center gap-3"
+                >
+                  <RecycleIcon size={16} /> Faça um Pedido!
+                </Button>
+              </Link>
+            </>
           )}
-
-          <Link href="dashboard/collection">
-            <Button
-              size="lg"
-              variant="link"
-              className="mt-3 flex w-full items-center justify-center gap-3"
-            >
-              <RecycleIcon size={16} /> Faça um Pedido!
-            </Button>
-          </Link>
         </div>
       </TabsContent>
     </Tabs>
