@@ -2,18 +2,15 @@
 
 import { prismaClient } from "@/lib/prisma";
 
-export const getUser = async (id: string) => {
+export const getCollectionSchedule = async (id: string) => {
   try {
-    const person = await prismaClient.person.findFirst({
+    const schedule = await prismaClient.collectionSchedule.findFirst({
       where: {
-        userId: id,
-      },
-      include: {
-        recycler: true,
+        recyclerId: id,
       },
     });
 
-    return person;
+    return schedule;
   } catch (error) {
     console.error("Error fetching user:", error);
     throw error;

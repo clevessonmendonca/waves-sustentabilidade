@@ -34,8 +34,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       }
     };
 
+    if (userData) return;
+
     fetchUserData();
-  }, [session, status]);
+  }, [session, status, userData]);
 
   return (
     <UserContext.Provider value={{ userData }}>{children}</UserContext.Provider>

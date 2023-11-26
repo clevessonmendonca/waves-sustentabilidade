@@ -14,7 +14,7 @@ export const Map = () => {
     <div>
       <LoadScript googleMapsApiKey="AIzaSyDeqtiaS3Hxv6l5lE0p82UFtc7pLPfIcQ8">
         <GoogleMap
-          mapContainerStyle={{ width: "100%", height: "400px" }}
+          mapContainerStyle={{ width: "100%", height: "350px" }}
           center={mapCenter}
           zoom={mapZoom}
         >
