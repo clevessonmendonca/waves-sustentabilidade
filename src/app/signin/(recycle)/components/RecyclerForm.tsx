@@ -52,8 +52,6 @@ export const formSchema = z.object({
   recyclingServiceDescription: z
     .string()
     .min(10, { message: "A descrição deve ter pelo menos 10 caracteres." }),
-  socialDonations: z.string(),
-  donationDetails: z.string().optional(),
 });
 
 export interface RecycleFormValues {
@@ -68,7 +66,7 @@ export interface RecycleFormValues {
   timeInMarket: string;
   recyclingServiceDescription: string;
   kgRecycled: string;
-  socialDonations: boolean;
+  socialDonations?: boolean;
   donationDetails?: string;
   currentStep: number;
 }
@@ -101,7 +99,6 @@ export const RecyclerForm = () => {
         "timeInMarket",
         "recyclingServiceDescription",
         "kgRecycled",
-        "socialDonations",
       ];
     }
 
@@ -112,11 +109,10 @@ export const RecyclerForm = () => {
     setValue("currentStep", currentStep + 1);
   };
 
-  const onSubmit: SubmitHandler<RecycleFormValues> = (data) => {
+  const onSubmit: SubmitHandler<RecycleFormValues> = async (data) => {
     if (currentStep < 2) return handleNextStep();
 
     if (!Session?.user?.id) return;
-    console.log(data);
 
     try {
       setIsLoading(true);
@@ -126,7 +122,7 @@ export const RecyclerForm = () => {
         description: "Seus dados estão sendo válidados, por favor aguarde!",
       });
 
-      createRecycler(data, Session?.user?.id);
+      await createRecycler(data, Session?.user?.id);
 
       toast({
         title: "Cadastrado com Sucesso!",
@@ -174,6 +170,7 @@ export const RecyclerForm = () => {
             <FormField
               name="phone"
               label="Telefone"
+              type="tel"
               placeholder="Seu Telefone"
               form={form}
               error={form.formState?.errors?.phone?.message}
@@ -298,27 +295,7 @@ export const RecyclerForm = () => {
               }
               checkboxLabel={undefined}
             />
-            <FormField
-              name="socialDonations"
-              checkboxLabel="Doações Sociais"
-              form={form}
-              error={form.formState?.errors?.socialDonations?.message}
-              label={""}
-              placeholder={""}
-              type="checkbox"
-            />
           </>
-        )}
-
-        {watch("socialDonations") && (
-          <FormField
-            name="donationDetails"
-            label="Detalhes das Doações"
-            placeholder="Detalhes das Doações"
-            form={form}
-            error={form.formState?.errors?.donationDetails?.message}
-            checkboxLabel={"Você faz doações sociais?"}
-          />
         )}
 
         <div className="space-x-4">

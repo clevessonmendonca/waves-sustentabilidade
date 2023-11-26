@@ -8,8 +8,6 @@ export async function createRecycler(
   userId: string,
 ): Promise<any> {
   return new Promise(async (resolve, reject) => {
-    const kgRecycled = Number(values.kgRecycled);
-
     try {
       const person = await prismaClient.person.create({
         data: {
@@ -30,9 +28,8 @@ export async function createRecycler(
         data: {
           recyclingServiceDescription: values.recyclingServiceDescription,
           kgRecycled: 0,
-          socialDonations: values.socialDonations,
-          donationDetails: values.donationDetails,
           personId: person.id,
+          socialDonations: false,
         },
       });
 

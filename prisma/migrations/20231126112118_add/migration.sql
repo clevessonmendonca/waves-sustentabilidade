@@ -90,7 +90,7 @@ CREATE TABLE "Recycler" (
     "id" TEXT NOT NULL,
     "recyclingServiceDescription" TEXT NOT NULL,
     "kgRecycled" INTEGER NOT NULL,
-    "socialDonations" BOOLEAN NOT NULL,
+    "socialDonations" BOOLEAN,
     "donationDetails" TEXT,
     "personId" TEXT NOT NULL,
 

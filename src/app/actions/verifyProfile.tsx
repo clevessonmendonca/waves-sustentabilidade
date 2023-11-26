@@ -5,14 +5,16 @@ import { prismaClient } from "@/lib/prisma";
 export async function VerifyProfile(userId: string): Promise<any> {
   return new Promise(async (resolve, reject) => {
     try {
-      const user = await prismaClient.person.findFirst({
+      const person = await prismaClient.person.findFirst({
         where: { userId },
         include: {
           recycler: true,
         },
       });
 
-      resolve(user);
+      if ((person?.recycler as any).length <= 0) resolve(null);
+
+      resolve(person);
     } catch (error) {
       reject(error);
     }

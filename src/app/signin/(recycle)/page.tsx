@@ -7,19 +7,6 @@ import { Separator } from "@/components/ui/separator";
 import { VerifyProfile } from "../../actions/verifyProfile";
 import { useRouter } from "next/navigation";
 
-export interface User {
-  id: any;
-  name: string;
-  phone: string;
-  cpfCnpj: string;
-  cep: string;
-  city: string;
-  uf: string;
-  birthDate: Date;
-  sex: string;
-  timeInMarket: string;
-}
-
 export default function DashboardSignin() {
   const { data: session } = useSession();
   const router = useRouter();
@@ -28,7 +15,6 @@ export default function DashboardSignin() {
     if (!session?.user) return;
 
     const verified = await VerifyProfile(session.user.id);
-
     if (!verified) return;
 
     router.push(`/dashboard`);

@@ -2,15 +2,12 @@
 
 import { prismaClient } from "@/lib/prisma";
 
-export const getUser = async (id: string) => {
+export const getRecycler = async (id: string) => {
   try {
-    const user = await prismaClient.person.findFirst({
+    const user = await prismaClient.recycler.findFirst({
       where: {
-        userId: id,
+        personId: id,
       },
-      include: {
-        recycler: true
-      }
     });
 
     return user;

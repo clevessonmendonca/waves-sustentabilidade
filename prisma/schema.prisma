@@ -97,7 +97,7 @@ model Recycler {
   id String @id @default(uuid())
   recyclingServiceDescription String
   kgRecycled Int
-  socialDonations Boolean
+  socialDonations Boolean?
   donationDetails String?
 
   personId String

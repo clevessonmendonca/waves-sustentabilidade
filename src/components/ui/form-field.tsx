@@ -1,4 +1,8 @@
-import { UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import {
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
 import {
   FormItem,
   FormLabel,
@@ -16,6 +20,7 @@ interface RecyclerFormFieldProps {
   type?: string;
   checkboxLabel?: string;
   form: {
+    formState: any;
     register: UseFormRegister<any>;
     setValue: UseFormSetValue<any>;
     watch: UseFormWatch<any>;
@@ -43,10 +48,8 @@ export const FormField: React.FC<RecyclerFormFieldProps> = ({
             <Checkbox
               {...register(name)}
               checked={form.watch(name)}
-              onCheckedChange={(value) =>
-                form.setValue("isoCertification", value)
-              }
-              name="Você faz doações sociais?"
+              onCheckedChange={(value) => form.setValue(name, value)}
+              name={name}
             />
           </FormControl>
         </div>
