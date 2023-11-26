@@ -27,6 +27,8 @@ export const createCollectionSchedule = async (
         description: data.description,
         image: data.image?.path || null,
         recyclerId: user.recycler[0].id,
+        date: Date(),
+        status: "pending",
       },
     });
 

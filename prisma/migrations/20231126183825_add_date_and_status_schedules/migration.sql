@@ -123,6 +123,8 @@ CREATE TABLE "CollectionSchedule" (
     "dayOfWeek" TEXT NOT NULL,
     "description" TEXT,
     "image" TEXT,
+    "date" TIMESTAMP(3) NOT NULL,
+    "status" TEXT NOT NULL,
     "recyclerId" TEXT NOT NULL,
 
     CONSTRAINT "CollectionSchedule_pkey" PRIMARY KEY ("id")

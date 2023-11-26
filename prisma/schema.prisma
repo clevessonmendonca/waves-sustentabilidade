@@ -130,6 +130,8 @@ model CollectionSchedule {
   dayOfWeek String
   description String?
   image String?
+  date DateTime
+  status String
 
   recyclerId String
   recycler Recycler @relation(fields: [recyclerId], references: [id])

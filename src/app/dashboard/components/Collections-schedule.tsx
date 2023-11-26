@@ -151,22 +151,26 @@ export const CollectionsSchedule = ({
 
   return (
     <>
-      <Card className="flex flex-wrap justify-between rounded-full px-4 py-1">
-        <div className="flex items-center gap-4">
-          <span className="inline-block rounded-full bg-accent p-4">
+      <Card className="flex flex-wrap justify-center rounded-full px-4 py-2 md:justify-between md:py-1">
+        <div className="flex items-center gap-2">
+          <span className="hidden rounded-full bg-accent p-4 md:inline-block">
             <CalendarClockIcon />
           </span>
           <h4 className="text-lg font-medium">Agendamentos</h4>
         </div>
-        <div className="flex flex-wrap items-center gap-4">
+        <div className="flex w-full flex-col flex-wrap items-center justify-center gap-4 md:w-auto md:flex-row md:justify-normal">
           <div className="flex items-center gap-2">
-            <AlertTriangleIcon className="text-yellow-500" />
+            <AlertTriangleIcon size={24} className="text-yellow-500" />
             <p className="text-sm opacity-75">
               Você tem 1 agendamento em processo
             </p>
           </div>
 
-          <Button className="rounded-full" onClick={() => setDialogOpen(true)}>
+          <Button
+            size="lg"
+            className="rounded-full"
+            onClick={() => setDialogOpen(true)}
+          >
             Conferir
           </Button>
         </div>

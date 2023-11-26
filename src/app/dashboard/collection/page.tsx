@@ -29,6 +29,8 @@ export interface FormCollectionValues {
   dayOfWeek: string;
   description?: string;
   image?: FileWithPath | undefined;
+  date: Date;
+  status: string;
 }
 
 export const FormCollectionSchema = z.object({
