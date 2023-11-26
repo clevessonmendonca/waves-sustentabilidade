@@ -15,7 +15,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormCollectionSchema, FormCollectionValues } from "../collection/page";
+import { FormCollectionValues } from "../collection/page";
 import { CollectionSchedule } from "@prisma/client";
 import { AlertTriangleIcon, CalendarClockIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -23,6 +23,30 @@ import { useToast } from "@/components/ui/use-toast";
 import { editCollectionSchedule } from "@/app/actions/editCollectionSchedule";
 import { deleteCollectionSchedule } from "@/app/actions/deleteCollectionSchedule";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { z } from "zod";
+
+const FormCollectionSchema = z.object({
+  materialType: z
+    .string()
+    .min(1, { message: "Tipo de Material é um campo obrigatório" }),
+  quantityKg: z
+    .string()
+    .min(1, { message: "A quantidade deve ser maior que zero" }),
+  collectionTime: z.object({
+    startTime: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, {
+      message: "Formato inválido para o horário de início",
+    }),
+    endTime: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, {
+      message: "Formato inválido para o horário de fim",
+    }),
+  }),
+  dayOfWeek: z
+    .string()
+    .min(1, { message: "Dia da Semana é um campo obrigatório" })
+    .max(255, { message: "Dia da Semana deve ter no máximo 255 caracteres" }),
+  description: z.string().optional(),
+  image: z.string().nullable().optional(),
+});
 
 export const CollectionsSchedule = ({
   schedule,

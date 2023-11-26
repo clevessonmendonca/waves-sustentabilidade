@@ -33,7 +33,7 @@ export interface FormCollectionValues {
   status: string;
 }
 
-export const FormCollectionSchema = z.object({
+const FormCollectionSchema = z.object({
   materialType: z
     .string()
     .min(1, { message: "Tipo de Material é um campo obrigatório" }),
