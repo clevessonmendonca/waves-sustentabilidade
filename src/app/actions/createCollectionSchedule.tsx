@@ -27,10 +27,12 @@ export const createCollectionSchedule = async (
         description: data.description,
         image: data.image?.path || null,
         recyclerId: user.recycler[0].id,
-        date: Date(),
+        date: new Date(),
         status: "pending",
       },
     });
+
+    if (!result) return;
 
     return result;
   } catch (error) {
