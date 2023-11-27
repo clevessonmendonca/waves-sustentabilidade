@@ -21,9 +21,19 @@ export const acceptSchedule = async (
       where: { id: scheduleId },
       data: {
         ...schedule,
+        status: "in_progress",
         collectorId: collectorId,
       },
     });
+
+    const notification = await prismaClient.notification.create({
+      data: {
+        recyclerId: schedule.recyclerId,
+        message: "Seu agendamento foi aceito pelo coletador.",
+      },
+    });
+
+    if (!notification) return;
 
     return acceptSchedule;
   } catch (error) {

@@ -103,6 +103,7 @@ model Recycler {
   personId String
   person Person @relation(fields: [personId], references: [id])
 
+  notification Notification[]
   collectionSchedule CollectionSchedule[]
 }
 
@@ -140,4 +141,15 @@ model CollectionSchedule {
 
   collectorId String?
   collector Collector? @relation(fields: [collectorId], references: [id])
+}
+
+model Notification {
+  id         String   @id @default(uuid())
+  recyclerId     String
+  message    String
+  isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  recycler       Recycler     @relation(fields: [recyclerId], references: [id])
 }

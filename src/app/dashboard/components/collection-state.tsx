@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { CollectionSchedule } from "@prisma/client";
 import { Collector } from "@/@types/User";
+import { getCollectionSchedulesToCollectors } from "@/app/actions/getCollectionSchedulesToCollectors";
 
 interface CollectionStateProps {
   collector: Collector | null;
@@ -21,22 +22,37 @@ export const CollectionState: React.FC<CollectionStateProps> = ({
 }) => {
   const userData = useContext(UserContext);
   const [schedules, setSchedules] = useState<CollectionSchedule | null>(null);
+  const [acceptedSchedule, setAcceptedSchedules] = useState<
+    CollectionSchedule[] | null
+  >(null);
 
   useEffect(() => {
-    const fetchCollectionSchedule = async () => {
-      userData?.userData?.recycler.map(async (recycler) => {
-        const schedule = await getCollectionSchedule(recycler.id);
+    const fetchCollectionScheduleAndCollector = async () => {
+      if (!userData?.userData) return;
 
-        if (!schedule) return;
+      if (!collector) return;
 
-        setSchedules(schedule);
-      });
+      const allSchedules = await getCollectionSchedulesToCollectors(
+        userData.userData.id,
+      );
+
+      const schedule = await getCollectionSchedule(userData.userData.id);
+
+      if (!allSchedules) return;
+
+      const accepted = allSchedules.filter(
+        (schedule) => schedule.collectorId === collector.id,
+      );
+
+      setAcceptedSchedules(accepted);
+
+      setSchedules(schedule);
     };
 
     if (schedules) return;
 
-    fetchCollectionSchedule();
-  }, [userData]);
+    fetchCollectionScheduleAndCollector();
+  }, [schedules, userData]);
 
   if (!userData) {
     return <Loading />;

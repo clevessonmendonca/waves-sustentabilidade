@@ -13,15 +13,19 @@ import { UserContext } from "../providers/user";
 import { getCollector } from "../actions/getCollector";
 import { Collector } from "@/@types/User";
 import { Schedules } from "./components/schedules";
+import { getRecycler } from "../actions/getRecycler";
+import { useRouter } from "next/navigation";
+import { toast } from "@/components/ui/use-toast";
 
 export default function Home() {
   const userData = useContext(UserContext);
+  const router = useRouter();
 
   const [collector, setCollector] = useState<Collector | null>(null);
 
   useEffect(() => {
-    const fetchCollector = async () => {
-      if (!userData?.userData) return;
+    const fetchCollectorOrRecycle = async () => {
+      if (!userData?.userData) return
 
       const collector = await getCollector(userData.userData.id);
 
@@ -32,8 +36,8 @@ export default function Home() {
 
     if (collector) return;
 
-    fetchCollector();
-  }, [userData]);
+    fetchCollectorOrRecycle();
+  }, [collector, userData]);
 
   if (!userData) {
     return <Loading />;

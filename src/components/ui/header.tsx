@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BellDotIcon,
   HomeIcon,
+  InfoIcon,
   LogOutIcon,
   MenuIcon,
   RecycleIcon,
@@ -32,6 +33,9 @@ import {
   Sheet,
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
+import { getNotification } from "@/app/actions/getNotifications";
+import { Notification } from "@prisma/client";
+import { NotificationList } from "./notification-list";
 
 export const handleLoginClick = async () => {
   await signIn("google", { callbackUrl: "/signin" });
@@ -44,13 +48,23 @@ export const handleLogoutClick = async () => {
 export const Header = () => {
   const router = useRouter();
   const { status, data } = useSession();
+  const [notifications, setNotifications] = useState<Notification[] | null>(
+    null,
+  );
 
   useEffect(() => {
     if (status === "unauthenticated") {
       return router.push("/");
     }
-  }, [router, status]);
 
+    async function fetchNotification() {
+      const notifications = await getNotification();
+
+      setNotifications(notifications);
+    }
+
+    fetchNotification();
+  }, [router, status]);
 
   return (
     <Card className="mx-auto flex w-full max-w-screen-xl items-center justify-between gap-3 border-none bg-transparent p-[1.875rem] shadow-none">
@@ -80,11 +94,16 @@ export const Header = () => {
                 <BellDotIcon />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuLabel>Notificações</DropdownMenuLabel>
+                <DropdownMenuLabel className="flex items-center justify-between gap-16 px-2">
+                  Notificações{" "}
+                  <Button className="px-0" variant="link">
+                    Marcar todas como lidas.
+                  </Button>
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="py-2">
-                  <p>Você não possui notificações.</p>
-                </DropdownMenuItem>
+                <div className="flex flex-col gap-1 px-0 py-2">
+                  <NotificationList />
+                </div>
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -112,7 +131,10 @@ export const Header = () => {
 
                 <DropdownMenuSeparator className="mt-2" />
 
-                <DropdownMenuItem onClick={handleLogoutClick} className="flex items-center gap-2">
+                <DropdownMenuItem
+                  onClick={handleLogoutClick}
+                  className="flex items-center gap-2"
+                >
                   <LogOutIcon /> Sair
                 </DropdownMenuItem>
               </DropdownMenuContent>
