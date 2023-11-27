@@ -35,7 +35,6 @@ export interface Collector {
   purchases: string;
   biography: string;
   personId: string;
-  person: Person;
 }
 
 export interface Recycler {

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Collections } from "./components/collections";
 import { Map } from "./components/maps";
@@ -10,8 +10,9 @@ import { Separator } from "@/components/ui/separator";
 import Loading from "../loading";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../providers/user";
-import { Collector } from "@prisma/client";
 import { getCollector } from "../actions/getCollector";
+import { Collector } from "@/@types/User";
+import { Schedules } from "./components/schedules";
 
 export default function Home() {
   const userData = useContext(UserContext);
@@ -37,19 +38,19 @@ export default function Home() {
   if (!userData) {
     return <Loading />;
   }
-console.log(collector)
+
   return (
     <div>
       <GreetingAndStats />
       <div className="mx-auto my-6 max-w-screen-xl px-5">
-        <CollectionState />
+        <CollectionState collector={collector} />
       </div>
 
       <Separator className="mx-auto my-4 max-w-screen-xl px-5" />
 
       <div className="mx-auto mb-12 grid w-full max-w-screen-xl grid-cols-1 items-center justify-center gap-6 px-5 md:grid-cols-3">
         <Card className="h-full max-h-[400px] w-full bg-card ">
-          <Collections />
+          {collector ? <Schedules /> : <Collections />}
         </Card>
         <Card className="h-full max-h-[400px] w-full bg-card">
           <HistoryStats />

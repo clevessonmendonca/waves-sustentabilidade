@@ -126,6 +126,7 @@ CREATE TABLE "CollectionSchedule" (
     "date" TIMESTAMP(3) NOT NULL,
     "status" TEXT NOT NULL,
     "recyclerId" TEXT NOT NULL,
+    "collectorId" TEXT,
 
     CONSTRAINT "CollectionSchedule_pkey" PRIMARY KEY ("id")
 );
@@ -165,3 +166,6 @@ ALTER TABLE "Collector" ADD CONSTRAINT "Collector_personId_fkey" FOREIGN KEY ("p
 
 -- AddForeignKey
 ALTER TABLE "CollectionSchedule" ADD CONSTRAINT "CollectionSchedule_recyclerId_fkey" FOREIGN KEY ("recyclerId") REFERENCES "Recycler"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CollectionSchedule" ADD CONSTRAINT "CollectionSchedule_collectorId_fkey" FOREIGN KEY ("collectorId") REFERENCES "Collector"("id") ON DELETE SET NULL ON UPDATE CASCADE;

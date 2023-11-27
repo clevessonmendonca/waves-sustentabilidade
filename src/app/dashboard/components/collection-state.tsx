@@ -4,14 +4,21 @@ import { getCollectionSchedule } from "@/app/actions/getCollectionSchedule";
 import Loading from "@/app/loading";
 import { UserContext } from "@/app/providers/user";
 import { Card } from "@/components/ui/card";
-import { CollectionSchedule } from "@prisma/client";
 import React, { useContext, useEffect, useState } from "react";
 import { CollectionsSchedule } from "./Collections-schedule";
 import { CalendarDaysIcon, InfoIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { CollectionSchedule } from "@prisma/client";
+import { Collector } from "@/@types/User";
 
-export const CollectionState = () => {
+interface CollectionStateProps {
+  collector: Collector | null;
+}
+
+export const CollectionState: React.FC<CollectionStateProps> = ({
+  collector,
+}) => {
   const userData = useContext(UserContext);
   const [schedules, setSchedules] = useState<CollectionSchedule | null>(null);
 

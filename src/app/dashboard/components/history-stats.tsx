@@ -68,7 +68,20 @@ export const HistoryStats = () => {
       <TabsContent value="collections" className="flex flex-col gap-4">
         {schedules ? (
           schedules?.length === 0 ? (
-            <p className="text-sm opacity-75">Você ainda não tem pedidos!</p>
+            <>
+              <p className="text-center text-sm opacity-75">
+                Você não possui nenhuma coleta!
+              </p>
+              <Link href="dashboard/collection">
+                <Button
+                  size="lg"
+                  variant="link"
+                  className="mt-2 flex w-full items-center justify-center gap-3"
+                >
+                  <RecycleIcon size={16} /> Faça um Pedido!
+                </Button>
+              </Link>
+            </>
           ) : (
             <ul className="w-full">
               <Badge
@@ -249,8 +262,8 @@ export const HistoryStats = () => {
               <p className="text-sm opacity-75">Você ainda não tem pedidos!</p>
             ) : (
               <ul className="w-full">
-                <ScrollArea className="max-h-48">
-                  <div className="flex h-full max-h-48 flex-col gap-4">
+                <ScrollArea className="max-h-56">
+                  <div className="flex h-full max-h-56 flex-col gap-4">
                     {schedules.map((schedule) => (
                       <Card key={schedule.id} className="px-5 py-4">
                         <li className="flex flex-col gap-2">
