@@ -158,7 +158,7 @@ export const ScheduleList = () => {
               ))}
             </div>
           </ScrollArea>
-        ) : schedules?.length === 0 ? (
+        ) : schedules?.length === 0 && collector ? (
           <>
             <Separator />
             <p className="mt-8 text-center text-sm opacity-75">
