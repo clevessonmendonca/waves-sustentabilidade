@@ -202,7 +202,6 @@ export const Header = () => {
 
                       <div className="flex flex-col">
                         <p className="font-medium">{data.user.name}</p>
-                        <p className="text-sm opacity-75">Reciclador</p>
                       </div>
                     </div>
 
