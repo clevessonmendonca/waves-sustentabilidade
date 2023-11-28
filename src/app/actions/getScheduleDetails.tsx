@@ -43,7 +43,6 @@ export const getScheduleDetails = async (id: string) => {
     if (!user) {
       throw new Error("User not found");
     }
-
     const updatedPerson = {
       ...person,
       email: user.email,

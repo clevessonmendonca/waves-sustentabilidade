@@ -33,9 +33,10 @@ import { formatDate } from "@/components/ui/schedule-card";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ChatMessage } from "@/components/ui/chat-message";
 
-interface PersonWithValues extends Person {
-  image?: string | null;
+export interface PersonWithValues extends Person {
+  avatar?: string | null;
   email: string;
 }
 
@@ -79,19 +80,18 @@ export default function SchedulePage() {
     loadScheduleDetails();
   }, [scheduleId]);
 
-  if (!scheduleId) return 
+  if (!scheduleId) return;
 
   if (!scheduleDetails) return;
-
   return (
-    <div className="relative mx-auto flex w-full max-w-screen-xl flex-col px-5">
+    <div className="relative max-h-screen mx-auto flex w-full max-w-screen-xl flex-col px-5">
       <Link href="/dashboard" className="flex items-center gap-3">
         <span className="rounded-full bg-accent p-2">
           <ArrowLeftIcon />
         </span>{" "}
         Voltar
       </Link>
-      <div className="flex gap-12">
+      <div className="grid md:grid-cols-3 gap-12">
         <div>
           <div className="pb-4 pt-8">
             <h1 className="text-xl font-semibold">Informações da coleta</h1>
@@ -188,24 +188,28 @@ export default function SchedulePage() {
         </div>
 
         <div>
+          <Card>
+            <ChatMessage person={scheduleDetails.person} />
+          </Card>
+        </div>
+
+        <div>
           <div className="pb-4 pt-8">
             <h2 className="text-xl font-semibold">Informações do reciclador</h2>
           </div>
-          <Card className="max-w-lg px-5 py-4 flex flex-col justify-center items-center">
+          <Card className="flex max-w-lg flex-col items-center justify-center px-5 py-4">
             <CardHeader className="flex items-center">
               <Avatar className="h-20 w-20">
                 <AvatarFallback>
                   {scheduleDetails?.person.name.toUpperCase()}
                 </AvatarFallback>
 
-                {scheduleDetails?.person.image && (
-                  <AvatarImage src={scheduleDetails?.person.image} />
+                {scheduleDetails?.person.avatar && (
+                  <AvatarImage src={scheduleDetails?.person.avatar} />
                 )}
               </Avatar>
 
               <h3>{scheduleDetails.person.name}</h3>
-
-              
             </CardHeader>
           </Card>
         </div>
