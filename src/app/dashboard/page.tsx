@@ -13,25 +13,29 @@ import { UserContext } from "../providers/user";
 import { getCollector } from "../actions/getCollector";
 import { Collector } from "@/@types/User";
 import { Schedules } from "./components/schedules";
-import { getRecycler } from "../actions/getRecycler";
-import { useRouter } from "next/navigation";
-import { toast } from "@/components/ui/use-toast";
 
 export default function Home() {
   const userData = useContext(UserContext);
-  const router = useRouter();
 
   const [collector, setCollector] = useState<Collector | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCollectorOrRecycle = async () => {
-      if (!userData?.userData) return
+      if (!userData?.userData) return;
 
-      const collector = await getCollector(userData.userData.id);
+      try {
+        const collector = await getCollector(userData.userData.id);
 
-      if (!collector) return;
-
-      setCollector(collector);
+        if (collector) {
+          setCollector(collector);
+        }
+      } catch (error) {
+        console.log(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
     };
 
     if (collector) return;
@@ -39,13 +43,13 @@ export default function Home() {
     fetchCollectorOrRecycle();
   }, [collector, userData]);
 
-  if (!userData) {
+  if (!userData || loading) {
     return <Loading />;
   }
 
   return (
     <div>
-      <GreetingAndStats />
+      <GreetingAndStats collector={collector} />
       <div className="mx-auto my-6 max-w-screen-xl px-5">
         <CollectionState collector={collector} />
       </div>

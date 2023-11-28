@@ -21,7 +21,7 @@ export const acceptSchedule = async (
       where: { id: scheduleId },
       data: {
         ...schedule,
-        status: "in_progress",
+        status: "in_process",
         collectorId: collectorId,
       },
     });

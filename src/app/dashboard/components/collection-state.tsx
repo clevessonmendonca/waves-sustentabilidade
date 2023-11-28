@@ -12,6 +12,8 @@ import Link from "next/link";
 import { CollectionSchedule } from "@prisma/client";
 import { Collector } from "@/@types/User";
 import { getCollectionSchedulesToCollectors } from "@/app/actions/getCollectionSchedulesToCollectors";
+import { ProcessCollectionDialog } from "@/components/ui/process-collection-dialog";
+import { ScheduleDialog } from "@/components/ui/schedules-dialog";
 
 interface CollectionStateProps {
   collector: Collector | null;
@@ -22,6 +24,7 @@ export const CollectionState: React.FC<CollectionStateProps> = ({
 }) => {
   const userData = useContext(UserContext);
   const [schedules, setSchedules] = useState<CollectionSchedule | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [acceptedSchedule, setAcceptedSchedules] = useState<
     CollectionSchedule[] | null
   >(null);
@@ -45,7 +48,6 @@ export const CollectionState: React.FC<CollectionStateProps> = ({
       );
 
       setAcceptedSchedules(accepted);
-
       setSchedules(schedule);
     };
 
@@ -58,6 +60,15 @@ export const CollectionState: React.FC<CollectionStateProps> = ({
     return <Loading />;
   }
 
+
+  function handleProcessCollection() {
+    setIsDialogOpen(true);
+  }
+
+  function handleScheduleCollection() {
+    setIsDialogOpen(true);
+  }
+
   return (
     <div>
       {schedules ? (
@@ -65,23 +76,90 @@ export const CollectionState: React.FC<CollectionStateProps> = ({
           <CollectionsSchedule schedule={schedules} />
         </>
       ) : (
-        <Card className="flex flex-wrap justify-center rounded-full px-4 py-2 md:justify-between md:py-1">
+        <Card className="flex flex-wrap justify-center rounded-full px-4 py-3 md:justify-between md:py-1">
           <div className="flex items-center gap-2">
-            <span className="hidden rounded-full bg-accent p-4 md:inline-block">
-              <CalendarDaysIcon />
-            </span>
-            <h4 className="text-lg font-medium">Agendar Coleta</h4>
+            {collector ? (
+              acceptedSchedule ? (
+                <>
+                  <span className="hidden rounded-full bg-accent p-4 md:inline-block">
+                    <CalendarDaysIcon />
+                  </span>
+                  <h4 className="text-lg font-medium">Coleta em Andamento</h4>
+                </>
+              ) : (
+                <>
+                  <span className="hidden rounded-full bg-accent p-4 md:inline-block">
+                    <CalendarDaysIcon />
+                  </span>
+                  <h4 className="text-lg font-medium">
+                    Próximas Coletas Disponíveis
+                  </h4>
+                </>
+              )
+            ) : (
+              <>
+                <span className="hidden rounded-full bg-accent p-4 md:inline-block">
+                  <CalendarDaysIcon />
+                </span>
+                <h4 className="text-lg font-medium">Agendar Nova Coleta</h4>
+              </>
+            )}
           </div>
           <div className="flex w-full flex-col flex-wrap items-center justify-center gap-4 md:w-auto md:flex-row md:justify-normal">
-            <div className="flex items-center gap-2">
-              <InfoIcon className="text-yellow-500" />
-              <p className="text-sm opacity-75">
-                Você pode agendar uma coleta!
-              </p>
-            </div>
-            <Link href="/dashboard/collection">
-              <Button className="rounded-full">Fazer pedido</Button>
-            </Link>
+            {collector ? (
+              acceptedSchedule && acceptedSchedule.length > 0 ? (
+                <>
+                  <div className="flex items-center gap-2">
+                    <InfoIcon className="text-yellow-500" />
+                    <p className="text-sm opacity-75">
+                      Você tem uma coleta em andamento!
+                    </p>
+                  </div>
+                  <Button
+                    className="rounded-full"
+                    onClick={handleProcessCollection}
+                  >
+                    Ver Processo
+                  </Button>
+                  <ProcessCollectionDialog
+                    open={isDialogOpen}
+                    onClose={() => setIsDialogOpen(false)}
+                  />
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center gap-2">
+                    <InfoIcon className="text-yellow-500" />
+                    <p className="text-sm opacity-75">
+                      Confira as coletas próximas de você.
+                    </p>
+                  </div>
+                  <Button
+                    className="rounded-full"
+                    onClick={handleScheduleCollection}
+                  >
+                    Ver Coletas
+                  </Button>
+
+                  <ScheduleDialog
+                    open={isDialogOpen}
+                    onClose={() => setIsDialogOpen(false)}
+                  />
+                </>
+              )
+            ) : (
+              <>
+                <div className="flex items-center gap-2">
+                  <InfoIcon className="text-yellow-500" />
+                  <p className="text-sm opacity-75">
+                    Agende uma nova coleta agora mesmo.
+                  </p>
+                </div>
+                <Link href="/dashboard/collection">
+                  <Button className="rounded-full">Nova Coleta</Button>
+                </Link>
+              </>
+            )}
           </div>
         </Card>
       )}

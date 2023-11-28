@@ -14,6 +14,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import { ScheduleCard } from "@/components/ui/schedule-card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
@@ -26,6 +27,7 @@ import {
   XIcon,
   CheckIcon,
   InfoIcon,
+  AlertOctagon,
 } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 
@@ -110,7 +112,7 @@ export const ScheduleList = () => {
         });
       }
     } catch (error) {
-    toast({
+      toast({
         title: "Uh oh! Parece que deu algo errado.",
         description: `Ocorreu um erro ao aceitar o agendamento. Tente novamente mais tarde.`,
         variant: "destructive",
@@ -145,55 +147,13 @@ export const ScheduleList = () => {
         acceptedSchedule && acceptedSchedule.length > 0 ? (
           <ScrollArea className="max-h-64">
             <div className="flex h-full max-h-64 flex-col gap-4">
+              <Separator />
+              <h3 className=" flex items-center justify-center gap-2 font-semibold">
+                <AlertOctagon /> Você possui coletas em processo
+              </h3>
               {acceptedSchedule.map((schedule) => (
                 <div className="py-1" key={schedule.id}>
-                  <Card className="px-5 py-4 ">
-                    <li className="flex flex-col gap-1">
-                      <CardHeader className="flex flex-row items-center justify-between p-0">
-                        <h4 className="font-semibold">
-                          {schedule.materialType}
-                        </h4>
-
-                        <Button variant="link" className="p-0">
-                          <InfoIcon size={22} />
-                        </Button>
-                      </CardHeader>
-                      <CardContent className="grid grid-cols-2 gap-2 p-0 text-xs">
-                        <div>
-                          <span className="flex items-center gap-2 text-sm">
-                            <CalendarDays size={18} />
-                            Dia da Semana
-                          </span>
-                          <p>{schedule.dayOfWeek}</p>
-                        </div>
-                        <div>
-                          <span className="flex items-center gap-2 text-sm">
-                            <Clock10Icon size={18} />
-                            Horário
-                          </span>
-                          <p>
-                            Das {schedule.collectionStartTime} às{" "}
-                            {schedule.collectionEndTime}
-                          </p>
-                        </div>
-                        <div>
-                          <span className="flex items-center gap-2 text-sm">
-                            <BoxIcon size={18} />
-                            Quantidade (kg)
-                          </span>
-                          <p>{schedule.quantityKg} Kg</p>
-                        </div>
-
-                        <div>
-                          <span className="flex items-center gap-2 text-sm">
-                            <CalendarIcon size={18} />
-                            Data
-                          </span>
-                          <p>{formatDate(schedule.date)}</p>
-                        </div>
-                      </CardContent>
-                    </li>
-                  </Card>
+                  <ScheduleCard schedule={schedule} />
                 </div>
               ))}
             </div>

@@ -21,6 +21,7 @@ import { CollectionSchedule } from "@prisma/client";
 import { getCollectionSchedules } from "@/app/actions/getCollectionSchedules";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScheduleCard } from "@/components/ui/schedule-card";
 
 export const HistoryStats = () => {
   const userData = useContext(UserContext);
@@ -100,56 +101,7 @@ export const HistoryStats = () => {
                     {schedules.map((schedule) => (
                       <div className="py-1" key={schedule.id}>
                         {schedule.status === "pending" && (
-                          <Card className="px-5 py-4">
-                            <li className="flex flex-col gap-2">
-                              <CardHeader className="flex flex-row justify-between p-0">
-                                <h4 className="font-semibold">
-                                  {schedule.materialType}
-                                </h4>
-
-                                <div className="text-sm">
-                                  <div className="flex items-center gap-1 text-yellow-500">
-                                    <AlertTriangleIcon size={18} />
-                                    <span>Pendente</span>
-                                  </div>
-                                </div>
-                              </CardHeader>
-                              <CardContent className="grid grid-cols-2 gap-2 p-0 text-xs">
-                                <div>
-                                  <span className="flex items-center gap-2 text-sm">
-                                    <CalendarDays size={18} />
-                                    Dia da Semana
-                                  </span>
-                                  <p>{schedule.dayOfWeek}</p>
-                                </div>
-                                <div>
-                                  <span className="flex items-center gap-2 text-sm">
-                                    <Clock10Icon size={18} />
-                                    Horário
-                                  </span>
-                                  <p>
-                                    Das {schedule.collectionStartTime} às{" "}
-                                    {schedule.collectionEndTime}
-                                  </p>
-                                </div>
-                                <div>
-                                  <span className="flex items-center gap-2 text-sm">
-                                    <BoxIcon size={18} />
-                                    Quantidade (kg)
-                                  </span>
-                                  <p>{schedule.quantityKg} Kg</p>
-                                </div>
-
-                                <div>
-                                  <span className="flex items-center gap-2 text-sm">
-                                    <CalendarIcon size={18} />
-                                    Data
-                                  </span>
-                                  <p>{formatDate(schedule.date)}</p>
-                                </div>
-                              </CardContent>
-                            </li>
-                          </Card>
+                          <ScheduleCard schedule={schedule} />
                         )}
                       </div>
                     ))}
@@ -164,7 +116,7 @@ export const HistoryStats = () => {
               </Badge>
 
               {!schedules.some(
-                (schedule) => schedule.status === "in_progress",
+                (schedule) => schedule.status === "in_process",
               ) ? (
                 <p className="my-4 text-center text-sm opacity-75">
                   Não há nada agendado no momento.
@@ -175,56 +127,7 @@ export const HistoryStats = () => {
                     {schedules.map((schedule) => (
                       <div className="py-2" key={schedule.id}>
                         {schedule.status === "in_process" && (
-                          <Card className="px-5 py-4">
-                            <li className="flex flex-col gap-2">
-                              <CardHeader className="flex flex-row justify-between p-0">
-                                <h4 className="font-semibold">
-                                  {schedule.materialType}
-                                </h4>
-
-                                <div className="text-sm">
-                                  <div className="flex items-center gap-1 text-blue-500">
-                                    <InboxIcon size={18} />
-                                    <span>Em Processo</span>
-                                  </div>
-                                </div>
-                              </CardHeader>
-                              <CardContent className="grid grid-cols-2 gap-2 p-0 text-xs">
-                                <div>
-                                  <span className="flex items-center gap-2 text-sm">
-                                    <CalendarDays size={18} />
-                                    Dia da Semana
-                                  </span>
-                                  <p>{schedule.dayOfWeek}</p>
-                                </div>
-                                <div>
-                                  <span className="flex items-center gap-2 text-sm">
-                                    <Clock10Icon size={18} />
-                                    Horário
-                                  </span>
-                                  <p>
-                                    Das {schedule.collectionStartTime} às{" "}
-                                    {schedule.collectionEndTime}
-                                  </p>
-                                </div>
-                                <div>
-                                  <span className="flex items-center gap-2 text-sm">
-                                    <BoxIcon size={18} />
-                                    Quantidade (kg)
-                                  </span>
-                                  <p>{schedule.quantityKg} Kg</p>
-                                </div>
-
-                                <div>
-                                  <span className="flex items-center gap-2 text-sm">
-                                    <CalendarIcon size={18} />
-                                    Data
-                                  </span>
-                                  <p>{formatDate(schedule.date)}</p>
-                                </div>
-                              </CardContent>
-                            </li>
-                          </Card>
+                          <ScheduleCard schedule={schedule} />
                         )}
                       </div>
                     ))}
@@ -265,69 +168,7 @@ export const HistoryStats = () => {
                 <ScrollArea className="max-h-56">
                   <div className="flex h-full max-h-56 flex-col gap-4">
                     {schedules.map((schedule) => (
-                      <Card key={schedule.id} className="px-5 py-4">
-                        <li className="flex flex-col gap-2">
-                          <CardHeader className="flex flex-row justify-between p-0">
-                            <h4 className="font-semibold">
-                              {schedule.materialType}
-                            </h4>
-
-                            <div className="text-sm">
-                              {schedule.status === "pending" ? (
-                                <div className="flex items-center gap-1 text-yellow-500">
-                                  <AlertTriangleIcon size={18} />
-                                  <span>Pendente</span>
-                                </div>
-                              ) : schedule.status === "success" ? (
-                                <div className="flex items-center gap-1 text-green-500">
-                                  <CheckCircleIcon size={18} />
-                                  <span>Sucesso</span>
-                                </div>
-                              ) : schedule.status === "in_process" ? (
-                                <div className="flex items-center gap-1 text-blue-500">
-                                  <InboxIcon size={18} />
-                                  <span>Em Processo</span>
-                                </div>
-                              ) : null}
-                            </div>
-                          </CardHeader>
-                          <CardContent className="grid grid-cols-2 gap-2 p-0 text-xs">
-                            <div>
-                              <span className="flex items-center gap-2 text-sm">
-                                <CalendarDays size={18} />
-                                Dia da Semana
-                              </span>
-                              <p>{schedule.dayOfWeek}</p>
-                            </div>
-                            <div>
-                              <span className="flex items-center gap-2 text-sm">
-                                <Clock10Icon size={18} />
-                                Horário
-                              </span>
-                              <p>
-                                Das {schedule.collectionStartTime} às{" "}
-                                {schedule.collectionEndTime}
-                              </p>
-                            </div>
-                            <div>
-                              <span className="flex items-center gap-2 text-sm">
-                                <BoxIcon size={18} />
-                                Quantidade (kg)
-                              </span>
-                              <p>{schedule.quantityKg} Kg</p>
-                            </div>
-
-                            <div>
-                              <span className="flex items-center gap-2 text-sm">
-                                <CalendarIcon size={18} />
-                                Data
-                              </span>
-                              {/* Use a função formatDate para formatar a data conforme necessário */}
-                              <p>{formatDate(schedule.date)}</p>
-                            </div>
-                          </CardContent>
-                        </li>
-                      </Card>
+                      <ScheduleCard key={schedule.id} schedule={schedule} />
                     ))}
                   </div>
                 </ScrollArea>

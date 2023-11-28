@@ -1,5 +1,6 @@
 "use client";
 
+import { Collector } from "@/@types/User";
 import { getCollectionSchedules } from "@/app/actions/getCollectionSchedules";
 import Loading from "@/app/loading";
 import { UserContext } from "@/app/providers/user";
@@ -7,7 +8,11 @@ import { Card } from "@/components/ui/card";
 import { ArchiveRestoreIcon, MedalIcon, PackageOpenIcon } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 
-export const GreetingAndStats = () => {
+export const GreetingAndStats = ({
+  collector,
+}: {
+  collector: Collector | null;
+}) => {
   const userData = useContext(UserContext);
   const [scheduleLength, setSchedules] = useState(0);
 
@@ -35,9 +40,15 @@ export const GreetingAndStats = () => {
 
   return (
     <div className="mx-auto mt-2 flex max-w-screen-xl flex-col justify-between gap-8 px-5 md:flex-row md:items-center">
-      <h1 className="max-w-sm text-xl font-medium">
-        Bem-vindo {person?.name}. Vamos fazer uma nova coleta?
-      </h1>
+      {collector ? (
+        <h1 className="max-w-sm text-xl font-medium">
+          Bem-vindo {person?.name}. Que tal comprar items reciclaveis?
+        </h1>
+      ) : (
+        <h1 className="max-w-sm text-xl font-medium">
+          Bem-vindo {person?.name}. Vamos fazer uma nova coleta?
+        </h1>
+      )}
 
       <div className="flex flex-wrap gap-6">
         <Card className="flex items-center gap-4 border-none bg-transparent md:justify-center">
