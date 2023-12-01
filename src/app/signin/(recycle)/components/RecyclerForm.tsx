@@ -161,7 +161,7 @@ export const RecyclerForm = () => {
         description: "Seus dados de reciclador foram válidados.",
       });
 
-      router.push("/dashboard");
+      return router.push("/dashboard");
     } catch (error) {
       toast({
         title: "Uh oh! Parece que deu algo errado.",

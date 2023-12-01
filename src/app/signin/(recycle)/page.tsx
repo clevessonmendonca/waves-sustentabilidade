@@ -8,21 +8,23 @@ import { VerifyProfile } from "../../actions/verifyProfile";
 import { useRouter } from "next/navigation";
 
 export default function DashboardSignin() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
 
-  async function getUser() {
-    if (!session?.user) return;
-
-    const verified = await VerifyProfile(session.user.id);
-    if (!verified) return;
-
-    router.push(`/dashboard`);
-  }
-
   useEffect(() => {
+    async function getUser() {
+      if (!session?.user) return;
+
+      const verified = await VerifyProfile(session.user.id);
+      if (!verified) return;
+
+      router.push(`/dashboard`);
+    }
+
     getUser();
   });
+
+  if (status === "unauthenticated") return router.push(`/`);
 
   return (
     <div className="mx-auto max-w-screen-md px-5">

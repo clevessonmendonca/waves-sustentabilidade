@@ -38,7 +38,7 @@ import { Notification } from "@prisma/client";
 import { NotificationList } from "./notification-list";
 
 export const handleLoginClick = async () => {
-  await signIn("google", { callbackUrl: "/signin" });
+  await signIn("google", { callbackUrl: "/dashboard" });
 };
 
 export const handleLogoutClick = async () => {
