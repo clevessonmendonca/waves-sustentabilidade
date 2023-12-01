@@ -30,6 +30,8 @@ export default function Home() {
         if (collector) {
           setCollector(collector);
         }
+
+        setLoading(false);
       } catch (error) {
         console.log(error);
         throw error;
@@ -38,10 +40,8 @@ export default function Home() {
       }
     };
 
-    if (collector) return;
-
     fetchCollectorOrRecycle();
-  }, [collector, userData]);
+  });
 
   if (!userData || loading) {
     return <Loading />;
@@ -60,7 +60,7 @@ export default function Home() {
         <Card className="h-full max-h-[400px] w-full bg-card ">
           {collector ? <Schedules /> : <Collections />}
         </Card>
-        <Card className="h-full max-h-[400px] w-full bg-card">
+        <Card className="maxh-[600px] h-full w-full bg-card md:max-h-[400px]">
           <HistoryStats />
         </Card>
         <Card className="h-full max-h-[400px] w-full overflow-hidden bg-accent">

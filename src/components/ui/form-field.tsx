@@ -47,7 +47,6 @@ export const FormField: React.FC<RecyclerFormFieldProps> = ({
           <FormControl>
             <Checkbox
               {...register(name)}
-              checked={form.watch(name)}
               onCheckedChange={(value) => form.setValue(name, value)}
               name={name}
             />

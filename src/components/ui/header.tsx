@@ -42,7 +42,7 @@ export const handleLoginClick = async () => {
 };
 
 export const handleLogoutClick = async () => {
-  await signOut();
+  await signOut({ callbackUrl: "/" });
 };
 
 export const Header = () => {

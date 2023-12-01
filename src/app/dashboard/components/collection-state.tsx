@@ -109,7 +109,7 @@ export const CollectionState: React.FC<CollectionStateProps> = ({
             {collector ? (
               acceptedSchedule && acceptedSchedule.length > 0 ? (
                 <>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center text-center gap-2">
                     <InfoIcon className="text-yellow-500" />
                     <p className="text-sm opacity-75">
                       Você tem uma coleta em andamento!
@@ -128,7 +128,7 @@ export const CollectionState: React.FC<CollectionStateProps> = ({
                 </>
               ) : (
                 <>
-                  <div className="flex items-center gap-2">
+                  <div className="flex text-center items-center gap-2">
                     <InfoIcon className="text-yellow-500" />
                     <p className="text-sm opacity-75">
                       Confira as coletas próximas de você.
@@ -149,7 +149,7 @@ export const CollectionState: React.FC<CollectionStateProps> = ({
               )
             ) : (
               <>
-                <div className="flex items-center gap-2">
+                <div className="flex text-center items-center gap-2">
                   <InfoIcon className="text-yellow-500" />
                   <p className="text-sm opacity-75">
                     Agende uma nova coleta agora mesmo.

@@ -32,7 +32,7 @@ export function CollectorInfoDialog({
   if (!user) return null;
 
   return (
-    <Dialog open={onOpen}>
+    <Dialog open={onOpen} onOpenChange={() => onClose()}>
       <DialogTrigger asChild>
         <Button variant="outline" className="rounded-full py-6">
           <InfoIcon />

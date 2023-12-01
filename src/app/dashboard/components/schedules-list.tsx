@@ -1,11 +1,23 @@
 "use client";
 
+import React, { useContext, useEffect, useState } from "react";
 import { Collector } from "@/@types/User";
 import { acceptSchedule } from "@/app/actions/accept-schedule";
 import { getCollectionSchedulesToCollectors } from "@/app/actions/getCollectionSchedulesToCollectors";
 import { getCollector } from "@/app/actions/getCollector";
 import Loading from "@/app/loading";
 import { UserContext } from "@/app/providers/user";
+import { useToast } from "@/components/ui/use-toast";
+import {
+  AlertOctagon,
+  BoxIcon,
+  CalendarDays,
+  CalendarIcon,
+  CheckIcon,
+  Clock10Icon,
+  InfoIcon,
+  XIcon,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,19 +29,7 @@ import {
 import { ScheduleCard } from "@/components/ui/schedule-card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { useToast } from "@/components/ui/use-toast";
 import { CollectionSchedule } from "@prisma/client";
-import {
-  CalendarDays,
-  Clock10Icon,
-  BoxIcon,
-  CalendarIcon,
-  XIcon,
-  CheckIcon,
-  InfoIcon,
-  AlertOctagon,
-} from "lucide-react";
-import React, { useContext, useEffect, useState } from "react";
 
 export const ScheduleList = () => {
   const userData = useContext(UserContext);
@@ -61,7 +61,9 @@ export const ScheduleList = () => {
       setAcceptedSchedules(accepted);
 
       const pending = allSchedules.filter(
-        (schedule) => schedule.status === "pending",
+        (schedule) =>
+          schedule.status === "pending" &&
+          schedule.recyclerId === userData?.userData?.id,
       );
 
       setCollector(collector);
@@ -148,7 +150,7 @@ export const ScheduleList = () => {
           <ScrollArea className="max-h-64">
             <div className="flex h-full max-h-64 flex-col gap-4">
               <Separator />
-              <h3 className=" flex items-center justify-center gap-2 font-semibold">
+              <h3 className="flex items-center justify-center gap-2 font-semibold">
                 <AlertOctagon /> Você possui coletas em processo
               </h3>
               {acceptedSchedule.map((schedule) => (

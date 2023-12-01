@@ -96,8 +96,8 @@ export const HistoryStats = () => {
                   Não há nada solicitado no momento.
                 </p>
               ) : (
-                <ScrollArea className="max-h-36">
-                  <div className="flex h-full max-h-36 flex-col gap-4">
+                <ScrollArea className="max-h-52 md:max-h-32">
+                  <div className="flex h-full max-h-52 flex-col gap-4 md:max-h-32">
                     {schedules.map((schedule) => (
                       <div className="py-1" key={schedule.id}>
                         {schedule.status === "pending" && (
@@ -122,8 +122,8 @@ export const HistoryStats = () => {
                   Não há nada agendado no momento.
                 </p>
               ) : (
-                <ScrollArea className="max-h-32">
-                  <div className="flex h-full max-h-32 flex-col gap-4">
+                <ScrollArea className="max-h-52 md:max-h-32">
+                  <div className="flex h-full max-h-52 flex-col gap-4 md:max-h-32">
                     {schedules.map((schedule) => (
                       <div className="py-2" key={schedule.id}>
                         {schedule.status === "in_process" && (

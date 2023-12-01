@@ -16,6 +16,7 @@ import { createCollector } from "@/app/actions/createCollector";
 import { useEffect, useState } from "react";
 import { LoaderIcon } from "lucide-react";
 import { getCollectorSession } from "@/app/actions/getCollectorSession";
+import { Input } from "@/components/ui/input";
 
 const CollectorSchema = z.object({
   collectionServiceDescription: z.string(),

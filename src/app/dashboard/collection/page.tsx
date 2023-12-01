@@ -224,7 +224,7 @@ export default function FormCollection() {
                 {files.length === 0 ? (
                   <div className="flex flex-col items-center gap-4 text-sm text-gray-600 opacity-75">
                     <FolderDownIcon size={32} className="text-gray-400" />
-                    <p>
+                    <p className="px-5 text-center">
                       Arraste e solte os arquivos aqui ou clique para
                       selecionar.
                     </p>
