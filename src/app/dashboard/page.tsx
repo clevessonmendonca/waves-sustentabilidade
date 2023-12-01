@@ -22,6 +22,7 @@ export default function Dashboard() {
   const { status } = useSession();
   const [collector, setCollector] = useState<Collector | null>(null);
   const [loading, setLoading] = useState(true);
+  console.log(userData);
 
   useEffect(() => {
     const fetchCollectorOrRecycle = async () => {

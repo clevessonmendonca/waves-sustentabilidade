@@ -122,10 +122,10 @@ export const HistoryStats = () => {
                   Não há nada agendado no momento.
                 </p>
               ) : (
-                <ScrollArea className="max-h-52 md:max-h-32">
-                  <div className="flex h-full max-h-52 flex-col gap-4 md:max-h-32">
+                <ScrollArea className="max-h-52 md:max-h-28">
+                  <div className="flex h-full max-h-52 flex-col gap-4 md:max-h-28">
                     {schedules.map((schedule) => (
-                      <div className="py-2" key={schedule.id}>
+                      <div className="flex flex-col gap-2" key={schedule.id}>
                         {schedule.status === "in_process" && (
                           <ScheduleCard schedule={schedule} />
                         )}
