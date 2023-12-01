@@ -31,7 +31,7 @@ export default function Home() {
           setCollector(collector);
         }
 
-        setLoading(false);
+        return setLoading(false);
       } catch (error) {
         console.log(error);
         throw error;
