@@ -63,7 +63,7 @@ export const ScheduleList = () => {
       const pending = allSchedules.filter(
         (schedule) =>
           schedule.status === "pending" &&
-          schedule.recyclerId === userData?.userData?.id,
+          schedule.recyclerId !== userData.userData?.recycler[0].id,
       );
 
       setCollector(collector);

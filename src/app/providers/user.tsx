@@ -5,11 +5,11 @@ import { useSession } from "next-auth/react";
 import { getUser } from "../actions/getUser";
 import { Person } from "@/@types/User";
 
-interface UserContextType {
+interface UserContextData {
   userData: Person | null;
 }
 
-export const UserContext = createContext<UserContextType | undefined>(
+export const UserContext = createContext<UserContextData | undefined>(
   undefined,
 );
 
@@ -21,20 +21,24 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     const fetchUserData = async () => {
+      if (userData) {
+        return;
+      }
+
       if (status === "authenticated" && session?.user?.id) {
         try {
           const user = await getUser(session.user.id);
 
-          if (!user) return;
-
-          setUserData(user as Person | null);
+          if (user) {
+            setUserData(user as Person | null);
+          } else {
+            console.warn("User data not available.");
+          }
         } catch (error) {
           console.error("Error fetching user data:", error);
         }
       }
     };
-
-    if (userData) return;
 
     fetchUserData();
   }, [session, status, userData]);
