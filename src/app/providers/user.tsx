@@ -18,6 +18,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const { data: session, status } = useSession();
+
   const [userData, setUserData] = useState<Person | null>(null);
   const router = useRouter();
 
@@ -30,19 +31,19 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         const user = await getUser(session.user.id);
 
         if (user) {
-          setUserData(user as Person | null);
+          return setUserData(user as Person | null);
         } else {
-          return router.push("/signin");
+          return router.push("/signin/recycler");
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
 
-    if(userData) return
+    if (userData) return;
 
     fetchUserData();
-  }, [router, session, status, userData]);
+  }, [router, session, userData]);
 
   return (
     <UserContext.Provider value={{ userData }}>{children}</UserContext.Provider>

@@ -87,9 +87,9 @@ export const Header = () => {
 
         <div className="flex items-center justify-center gap-4">
           {status === "unauthenticated" ? (
-            <Button className="font-semibold" onClick={handleLoginClick}>
-              Cadastrar
-            </Button>
+            <Link href="/signin">
+              <Button className="font-semibold">Cadastrar</Button>
+            </Link>
           ) : (
             <div className="flex gap-5">
               <DropdownMenu>
