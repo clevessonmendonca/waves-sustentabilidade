@@ -33,7 +33,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         if (user) {
           return setUserData(user as Person | null);
         } else {
-          return router.push("/signin/recycler");
+          return router.push("/signin/recycle");
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
