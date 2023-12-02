@@ -1,25 +1,33 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Card } from "./card";
 import { InfoIcon } from "lucide-react";
 import { getNotification } from "@/app/actions/getNotifications";
 import { Notification } from "@prisma/client";
 import { formatDistanceToNow } from "date-fns";
+import { UserContext } from "@/app/providers/user";
 
 export const NotificationList = () => {
+  const userData = useContext(UserContext);
   const [notifications, setNotifications] = useState<Notification[] | null>(
     null,
   );
 
   useEffect(() => {
     async function fetchNotification() {
-      const notifications = await getNotification();
-      setNotifications(notifications);
+      if (
+        userData?.userData?.recycler &&
+        userData.userData?.recycler.length > 0
+      ) {
+        const recyclerId = userData.userData.recycler[0].id;
+        const recyclerNotifications = await getNotification(recyclerId);
+        setNotifications(recyclerNotifications);
+      }
     }
 
     fetchNotification();
-  }, []);
+  }, [userData]);
 
   const getTimeAgo = (createdAt: Date) => {
     const now = new Date();
@@ -40,23 +48,25 @@ export const NotificationList = () => {
     }
   };
 
-  const notificationItems = notifications ? (
-    notifications.map((notification) => (
-      <div key={notification.id}>
-        <Card className="flex w-full items-center gap-4 px-4 py-2">
-          <InfoIcon />
-          <div>
-            <p className="text-sm">{notification.message}</p>
-            <p className="text-xs opacity-80">
-              {getTimeAgo(new Date(notification.createdAt))}
-            </p>
+  return (
+    <>
+      {notifications && notifications.length > 0 ? (
+        notifications.map((notification) => (
+          <div key={notification.id}>
+            <Card className="flex w-full items-center gap-4 px-4 py-2">
+              <InfoIcon />
+              <div>
+                <p className="text-sm">{notification.message}</p>
+                <p className="text-xs opacity-80">
+                  {getTimeAgo(new Date(notification.createdAt))}
+                </p>
+              </div>
+            </Card>
           </div>
-        </Card>
-      </div>
-    ))
-  ) : (
-    <p>Você não possui notificações.</p>
+        ))
+      ) : (
+        <p className="text-center">Você não possui notificações.</p>
+      )}
+    </>
   );
-
-  return <>{notificationItems}</>;
 };

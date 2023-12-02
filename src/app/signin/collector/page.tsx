@@ -13,17 +13,20 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { createCollector } from "@/app/actions/createCollector";
+import { getCollectorSession } from "@/app/actions/getCollectorSession";
 import { useEffect, useState } from "react";
 import { LoaderIcon } from "lucide-react";
-import { getCollectorSession } from "@/app/actions/getCollectorSession";
-import { Input } from "@/components/ui/input";
 
 const CollectorSchema = z.object({
-  collectionServiceDescription: z.string(),
-  marketTime: z.string(),
-  organization: z.string(),
-  bio: z.string(),
-  cpfCnpj: z.string(),
+  collectionServiceDescription: z
+    .string()
+    .min(1, { message: "Descrição do Serviço é obrigatória." }),
+  marketTime: z
+    .string()
+    .min(1, { message: "Tempo de Atuação no Mercado é obrigatório." }),
+  organization: z.string().min(1, { message: "Organização é obrigatória." }),
+  bio: z.string().min(1, { message: "Biografia é obrigatória." }),
+  cpfCnpj: z.string().min(1, { message: "CPF/CNPJ é obrigatório." }),
   isoCertification: z.boolean(),
 });
 
@@ -43,38 +46,35 @@ export default function CollectorForm() {
     resolver: zodResolver(CollectorSchema),
   });
   const { data: Session } = useSession();
+  const router = useRouter();
+  const { toast } = useToast();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
 
   useEffect(() => {
-    const id = Session?.user.id;
+    const getCollection = async () => {
+      const id = Session?.user?.id;
 
-    if (!id) return;
+      if (id) {
+        const collector = await getCollectorSession(id);
+        setIsRegister(collector?.collector.length !== 0);
 
-    async function getCollection(id: string) {
-      const collector = await getCollectorSession(id);
+        if (isRegister) {
+          toast({
+            title: "Você já é Coletador.",
+            description:
+              "Você já possui um cadastro como coletador, veja as coletas próxima de você.",
+          });
+          router.push("/dashboard");
+        }
+      }
 
-      collector?.collector.length !== 0
-        ? setIsRegister(true)
-        : setIsLoading(false);
-    }
+      setIsLoading(false);
+    };
 
-    getCollection(id);
-  });
-
-  useEffect(() => {
-    isRegister &&
-      toast({
-        title: "Você já está cadastrado!",
-        description: "Redirecionamos você para o painel dos coletadores.",
-      });
-
-    if (isRegister) return router.push("/dashboard");
-  }, [isRegister]);
-
-  const router = useRouter();
-  const { toast } = useToast();
+    getCollection();
+  }, [Session, isRegister, toast, router]);
 
   const handleFormSubmit: SubmitHandler<CollectorFormValues> = async (data) => {
     if (!Session?.user?.id) return;
@@ -94,7 +94,7 @@ export default function CollectorForm() {
         description: "Seus dados foram válidados.",
       });
 
-      router.push("/dashboard/collectors");
+      router.push("/dashboard");
     } catch (error) {
       toast({
         variant: "destructive",
@@ -150,7 +150,7 @@ export default function CollectorForm() {
             placeholder="O que você quer que as pessoas saibam sobre você ou sua empresa?"
           />
           <span className="text-sm text-destructive">
-            {form?.formState.errors?.bio?.message}
+            {form?.formState?.errors?.bio?.message}
           </span>
         </div>
 

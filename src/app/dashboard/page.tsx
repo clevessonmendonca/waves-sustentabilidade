@@ -48,7 +48,7 @@ export default function Dashboard() {
   }, [userContext, router]);
 
   if (!userContext) {
-    return router.push("/");
+    return <Loading />;
   }
 
   const { userData, loading, error } = userContext;
@@ -57,9 +57,10 @@ export default function Dashboard() {
     return <Loading />;
   }
 
-  if (!userData?.recycler || userData.recycler.length <= 0) {
-    router.push("/signin/recycle");
-    return null;
+  if (!userData || (userData.recycler && userData.recycler.length > 0)) {
+    if (!userData?.recycler) {
+      return router.push("/signin/recycle");
+    }
   }
 
   return (

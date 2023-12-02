@@ -2,10 +2,11 @@
 
 import { prismaClient } from "@/lib/prisma";
 
-export const getNotification = async () => {
+export const getNotification = async (recyclerId: string) => {
   try {
     const notifications = await prismaClient.notification.findMany({
       where: {
+        recyclerId: recyclerId,
         isRead: false,
       },
     });

@@ -5,10 +5,11 @@ import { CollectionSchedule } from "@prisma/client";
 import { Button } from "./button";
 import { Dialog, DialogContent, DialogHeader, DialogOverlay } from "./dialog";
 import { Card } from "./card";
+import { ScheduleCard } from "./schedule-card";
 
 interface ScheduleDialogProps {
-  open?: boolean;
-  onClose?: () => void;
+  open: boolean;
+  onClose: () => void;
 }
 
 export const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
@@ -41,27 +42,15 @@ export const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
     fetchSchedules();
   }, [schedules, userData]);
 
-  const handleClose = () => {
-    setIsOpen(false);
-    if (onClose) onClose();
-  };
-
   return (
     <>
-      <Dialog open={isOpen} onOpenChange={() => (setIsOpen(false))}>
+      <Dialog open={isOpen} onOpenChange={() => onClose()}>
         <DialogOverlay />
         <DialogContent>
           <DialogHeader>Agendamentos Pendentes</DialogHeader>
           {schedules ? (
             schedules.map((schedule) => (
-              <Card key={schedule.id} className="mb-4 p-4">
-                <p>Material: {schedule.materialType}</p>
-                <p>Dia da Semana: {schedule.dayOfWeek}</p>
-                <p>
-                  Horário: {schedule.collectionStartTime} -{" "}
-                  {schedule.collectionEndTime}
-                </p>
-              </Card>
+              <ScheduleCard key={schedule.id} schedule={schedule} />
             ))
           ) : (
             <p>Nenhum agendamento pendente encontrado.</p>

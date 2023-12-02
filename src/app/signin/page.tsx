@@ -3,13 +3,17 @@
 import { Button } from "@/components/ui/button";
 import { handleLoginClick } from "@/components/ui/header";
 import Image from "next/image";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { UserContext } from "../providers/user";
 import { useRouter } from "next/navigation";
 
 export default function Signin() {
   const userData = useContext(UserContext);
   const router = useRouter();
+
+  useEffect(() => {
+    if (userData?.userData) return router.push("/dashboard");
+  });
 
   return (
     <div className="flex items-center justify-center">

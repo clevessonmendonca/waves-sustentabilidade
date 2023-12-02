@@ -114,10 +114,13 @@ export const CollectionState: React.FC<CollectionStateProps> = ({
                   >
                     Ver Processo
                   </Button>
-                  <ProcessCollectionDialog
-                    open={isDialogOpen}
-                    onClose={() => setIsDialogOpen(false)}
-                  />
+
+                  {isDialogOpen && (
+                    <ProcessCollectionDialog
+                      open={isDialogOpen}
+                      onClose={() => setIsDialogOpen(false)}
+                    />
+                  )}
                 </>
               ) : (
                 <>
@@ -134,10 +137,12 @@ export const CollectionState: React.FC<CollectionStateProps> = ({
                     Ver Coletas
                   </Button>
 
-                  <ScheduleDialog
-                    open={isDialogOpen}
-                    onClose={() => setIsDialogOpen(false)}
-                  />
+                  {isDialogOpen && (
+                    <ScheduleDialog
+                      open={isDialogOpen}
+                      onClose={() => setIsDialogOpen(false)}
+                    />
+                  )}
                 </>
               )
             ) : (
