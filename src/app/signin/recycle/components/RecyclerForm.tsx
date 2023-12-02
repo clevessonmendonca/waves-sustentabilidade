@@ -36,12 +36,17 @@ export const formSchema = z.object({
     .min(2, { message: "Nome deve ter pelo menos 2 caracteres." }),
   phone: z
     .string()
-    .min(10, { message: "Telefone deve ter pelo menos 10 caracteres." })
-    .regex(/^\d{10,}$/i, { message: "Telefone inválido." }),
+    .min(14, { message: "Telefone deve ter pelo menos 10 caracteres." })
+    .regex(/^\(\d{2}\)\s\d{5}-\d{4}$/i, { message: "Telefone inválido." }),
   cpfCnpj: z
     .string()
-    .min(11, { message: "CPF/CNPJ deve ter pelo menos 11 caracteres." })
-    .regex(/^\d{11,}$/i, { message: "CPF/CNPJ inválido." }),
+    .min(14, { message: "CPF/CNPJ deve ter pelo menos 11 caracteres." })
+    .regex(
+      /^(?:\d{3}\.\d{3}\.\d{3}-\d{2}|\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2})$/i,
+      {
+        message: "CPF/CNPJ inválido.",
+      },
+    ),
   cep: z.string().min(8, { message: "CEP inválido." }),
   uf: z.string().min(2, { message: "UF inválido." }),
   city: z
@@ -222,9 +227,6 @@ export const RecyclerForm = () => {
               className="flex flex-col gap-2"
               onValueChange={(value) => setValue("sex", value)}
             >
-              <span className="text-sm text-red-700">
-                {form.formState.errors.sex?.message}
-              </span>
               <span>Sexo</span>
               <div className="flex gap-4">
                 <div className="flex items-center space-x-2">
@@ -240,6 +242,9 @@ export const RecyclerForm = () => {
                   <Label htmlFor="other">Outro</Label>
                 </div>
               </div>
+              <span className="text-sm text-red-700">
+                {form.formState?.errors?.sex?.message}
+              </span>
             </RadioGroup>
 
             <FormItem className="flex flex-col">
@@ -273,6 +278,9 @@ export const RecyclerForm = () => {
                   />
                 </PopoverContent>
               </Popover>
+              <span className="text-sm text-red-700">
+                {form.formState.errors.birthDate?.message}
+              </span>
             </FormItem>
           </>
         )}

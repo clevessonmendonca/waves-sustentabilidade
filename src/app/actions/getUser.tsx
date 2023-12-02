@@ -13,9 +13,9 @@ export const getUser = async (id: string) => {
       },
     });
 
-    return person;
+    return person || null;
   } catch (error) {
     console.error("Error fetching user:", error);
-    throw error;
+    throw new Error("Error fetching user");
   }
 };

@@ -1,13 +1,17 @@
+// Seu componente principal
 "use client";
 
-import React, { createContext, ReactNode, useEffect, useState } from "react";
+import React, { createContext, ReactNode } from "react";
 import { useSession } from "next-auth/react";
-import { getUser } from "../actions/getUser";
-import { Person } from "@/@types/User";
 import { useRouter } from "next/navigation";
+import { Person } from "@/@types/User";
+import { useUserData } from "../actions/useUserData";
+import Loading from "@/app/loading";
 
 interface UserContextData {
   userData: Person | null;
+  loading: boolean;
+  error: string | null;
 }
 
 export const UserContext = createContext<UserContextData | undefined>(
@@ -17,35 +21,21 @@ export const UserContext = createContext<UserContextData | undefined>(
 export const UserProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
-  const [userData, setUserData] = useState<Person | null>(null);
-  const router = useRouter();
+  const { userData, loading, error } = useUserData(session?.user?.id || "");
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        if (status === "unauthenticated") return router.push("/");
-        if (!session?.user) return;
+  if (loading) {
+    return <Loading />;
+  }
 
-        const user = await getUser(session.user.id);
-
-        if (user) {
-          return setUserData(user as Person | null);
-        } else {
-          return router.push("/signin/recycle");
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    if (userData) return;
-
-    fetchUserData();
-  }, [router, session, userData]);
+  if (error) {
+    console.error("Error:", error);
+  }
 
   return (
-    <UserContext.Provider value={{ userData }}>{children}</UserContext.Provider>
+    <UserContext.Provider value={{ userData, loading, error }}>
+      {children}
+    </UserContext.Provider>
   );
 };

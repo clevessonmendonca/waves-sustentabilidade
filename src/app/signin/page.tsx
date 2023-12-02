@@ -1,9 +1,16 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { handleLoginClick } from "@/components/ui/header";
 import Image from "next/image";
-import React from "react";
+import React, { useContext } from "react";
+import { UserContext } from "../providers/user";
+import { useRouter } from "next/navigation";
 
 export default function Signin() {
+  const userData = useContext(UserContext);
+  const router = useRouter();
+
   return (
     <div className="flex items-center justify-center">
       <div className="flex h-[70vh] w-full max-w-screen-sm flex-col items-center justify-center gap-4">

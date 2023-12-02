@@ -9,9 +9,10 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
+import InputMask from "react-input-mask";
+import { Label } from "./label";
+import { Checkbox } from "./checkbox";
+import { Input } from "./input";
 
 interface RecyclerFormFieldProps {
   name: string;
@@ -56,7 +57,29 @@ export const FormField: React.FC<RecyclerFormFieldProps> = ({
         <>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            <Input placeholder={placeholder} {...register(name)} type={type} />
+            {type === "tel" ||
+            (type === "text" && name === "cpfCnpj") ||
+            name === "cep" ? (
+              <InputMask
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                mask={
+                  type === "tel"
+                    ? "(99) 99999-9999"
+                    : name === "cpfCnpj"
+                    ? "999.999.999-99"
+                    : "99999-999"
+                }
+                maskChar=" "
+                placeholder={placeholder}
+                {...register(name)}
+              />
+            ) : (
+              <Input
+                placeholder={placeholder}
+                {...register(name)}
+                type={type}
+              />
+            )}
           </FormControl>
           <FormMessage>{error}</FormMessage>
         </>

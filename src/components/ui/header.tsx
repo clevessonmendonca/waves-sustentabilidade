@@ -134,11 +134,14 @@ export const Header = () => {
 
                   <DropdownMenuSeparator className="mt-2" />
 
-                  <DropdownMenuItem
-                    onClick={handleLogoutClick}
-                    className="flex items-center gap-2"
-                  >
-                    <LogOutIcon /> Sair
+                  <DropdownMenuItem className="w-full">
+                    <Button
+                      variant="ghost"
+                      onClick={handleLogoutClick}
+                      className="w-full items-center gap-2"
+                    >
+                      <LogOutIcon /> Sair
+                    </Button>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

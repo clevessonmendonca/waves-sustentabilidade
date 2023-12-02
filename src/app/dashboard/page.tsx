@@ -17,42 +17,50 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
-  const userData = useContext(UserContext);
+  const userContext = useContext(UserContext);
   const router = useRouter();
-  const { status } = useSession();
   const [collector, setCollector] = useState<Collector | null>(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchCollectorOrRecycle = async () => {
-      if (!userData?.userData) return;
+    if (!userContext) {
+      router.push("/");
+      return;
+    }
 
+    const { userData } = userContext;
+
+    const fetchCollector = async () => {
       try {
-        const fetchedCollector = await getCollector(userData.userData.id);
+        if (userData) {
+          const fetchedCollector = await getCollector(userData.id);
 
-        if (fetchedCollector) {
-          setCollector(fetchedCollector);
-        } else {
-          console.error("Collector not found.");
+          if (fetchedCollector) {
+            setCollector(fetchedCollector);
+          } else {
+            console.error("Collector not found.");
+          }
         }
       } catch (error) {
         console.error("Error fetching collector:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
-    fetchCollectorOrRecycle();
-  }, [userData]);
+    fetchCollector();
+  }, [userContext, router]);
 
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/");
-    }
-  }, [status]);
+  if (!userContext) {
+    return router.push("/");
+  }
+
+  const { userData, loading, error } = userContext;
 
   if (loading) {
     return <Loading />;
+  }
+
+  if (!userData?.recycler || userData?.recycler?.length <= 0) {
+    router.push("/signin/recycle");
+    return null;
   }
 
   return (

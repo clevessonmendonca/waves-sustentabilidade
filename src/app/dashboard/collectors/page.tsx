@@ -15,7 +15,6 @@ import { haversineDistance } from "@/app/actions/coordinates/haversineDistance";
 import { Button } from "@/components/ui/button";
 import { CollectorInfoDialog } from "./components/collector-info-dialog";
 import { User } from "@/@types/User";
-import { Person } from "@prisma/client";
 import Link from "next/link";
 
 export default function CollectorList() {
