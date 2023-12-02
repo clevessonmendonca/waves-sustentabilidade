@@ -51,16 +51,8 @@ export default function Dashboard() {
     return <Loading />;
   }
 
-  const { userData, loading, error } = userContext;
-
-  if (loading) {
-    return <Loading />;
-  }
-
-  if (!userData || (userData.recycler && userData.recycler.length > 0)) {
-    if (!userData?.recycler) {
-      return router.push("/signin/recycle");
-    }
+  if (!userContext.userData || userContext?.userData?.recycler?.length === 0) {
+    return router.push("/signin/recycle");
   }
 
   return (
