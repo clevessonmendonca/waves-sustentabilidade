@@ -1,7 +1,7 @@
 "use server";
 
 import { prismaClient } from "@/lib/prisma";
-import { RecycleFormValues } from "../signin/(recycle)/components/RecyclerForm";
+import { RecycleFormValues } from "../signin/recycle/components/RecyclerForm";
 
 export async function createRecycler(
   values: RecycleFormValues,

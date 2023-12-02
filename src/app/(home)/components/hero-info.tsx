@@ -27,9 +27,9 @@ export const HeroInfo = () => {
             <Button className="shadow-lg">Ir para o painel</Button>
           </Link>
         ) : (
-          <Button className="shadow-lg" onClick={handleLoginClick}>
-            Salve o oceano
-          </Button>
+          <Link href="/signin">
+            <Button className="shadow-lg">Salve o oceano</Button>
+          </Link>
         )}
         <Link href="#about">
           <Button

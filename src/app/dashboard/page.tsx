@@ -13,7 +13,6 @@ import { CollectionState } from "./components/collection-state";
 import { Separator } from "@/components/ui/separator";
 import Loading from "../loading";
 import { Schedules } from "./components/schedules";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
@@ -58,7 +57,7 @@ export default function Dashboard() {
     return <Loading />;
   }
 
-  if (!userData?.recycler || userData?.recycler?.length <= 0) {
+  if (!userData?.recycler || userData.recycler.length <= 0) {
     router.push("/signin/recycle");
     return null;
   }

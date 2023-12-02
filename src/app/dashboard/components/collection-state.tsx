@@ -31,9 +31,7 @@ export const CollectionState: React.FC<CollectionStateProps> = ({
 
   useEffect(() => {
     const fetchCollectionScheduleAndCollector = async () => {
-      if (!userData?.userData) return;
-
-      if (!collector) return;
+      if (!userData?.userData || !collector) return;
 
       const allSchedules = await getCollectionSchedulesToCollectors(
         userData.userData.id,
@@ -54,12 +52,11 @@ export const CollectionState: React.FC<CollectionStateProps> = ({
     if (schedules) return;
 
     fetchCollectionScheduleAndCollector();
-  }, [schedules, userData]);
+  }, [schedules, userData, collector]);
 
   if (!userData) {
     return <Loading />;
   }
-
 
   function handleProcessCollection() {
     setIsDialogOpen(true);
@@ -71,11 +68,7 @@ export const CollectionState: React.FC<CollectionStateProps> = ({
 
   return (
     <div>
-      {schedules ? (
-        <>
-          <CollectionsSchedule schedule={schedules} />
-        </>
-      ) : (
+      {!schedules ? (
         <Card className="flex flex-wrap justify-center rounded-full px-4 py-3 md:justify-between md:py-1">
           <div className="flex items-center gap-2">
             {collector ? (
@@ -109,7 +102,7 @@ export const CollectionState: React.FC<CollectionStateProps> = ({
             {collector ? (
               acceptedSchedule && acceptedSchedule.length > 0 ? (
                 <>
-                  <div className="flex items-center text-center gap-2">
+                  <div className="flex items-center gap-2 text-center">
                     <InfoIcon className="text-yellow-500" />
                     <p className="text-sm opacity-75">
                       Você tem uma coleta em andamento!
@@ -128,7 +121,7 @@ export const CollectionState: React.FC<CollectionStateProps> = ({
                 </>
               ) : (
                 <>
-                  <div className="flex text-center items-center gap-2">
+                  <div className="flex items-center gap-2 text-center">
                     <InfoIcon className="text-yellow-500" />
                     <p className="text-sm opacity-75">
                       Confira as coletas próximas de você.
@@ -149,7 +142,7 @@ export const CollectionState: React.FC<CollectionStateProps> = ({
               )
             ) : (
               <>
-                <div className="flex text-center items-center gap-2">
+                <div className="flex items-center gap-2 text-center">
                   <InfoIcon className="text-yellow-500" />
                   <p className="text-sm opacity-75">
                     Agende uma nova coleta agora mesmo.
@@ -162,6 +155,8 @@ export const CollectionState: React.FC<CollectionStateProps> = ({
             )}
           </div>
         </Card>
+      ) : (
+        <CollectionsSchedule schedule={schedules} />
       )}
     </div>
   );
