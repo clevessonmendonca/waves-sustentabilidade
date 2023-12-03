@@ -36,7 +36,7 @@ import { Separator } from "@/components/ui/separator";
 import { NotificationList } from "./notification-list";
 
 export const handleLoginClick = async () => {
-  await signIn("google", { callbackUrl: "/signin", redirect: true });
+  await signIn("google", { callbackUrl: "/signin/recycle", redirect: true });
 };
 
 export const handleLogoutClick = async () => {
