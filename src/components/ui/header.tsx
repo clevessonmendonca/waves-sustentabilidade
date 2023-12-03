@@ -33,14 +33,11 @@ import {
   Sheet,
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
-import { getNotification } from "@/app/actions/getNotifications";
 import { Notification } from "@prisma/client";
 import { NotificationList } from "./notification-list";
-import { Dialog, DialogHeader, DialogContent } from "./dialog";
-import { DialogDescription } from "@radix-ui/react-dialog";
 
 export const handleLoginClick = async () => {
-  await signIn("google", { callbackUrl: "/dashboard" });
+  await signIn("google", { callbackUrl: "/dashboard", redirect: true });
 };
 
 export const handleLogoutClick = async () => {
@@ -50,22 +47,11 @@ export const handleLogoutClick = async () => {
 export const Header = () => {
   const router = useRouter();
   const { status, data } = useSession();
-  const [notifications, setNotifications] = useState<Notification[] | null>(
-    null,
-  );
 
   useEffect(() => {
     if (status === "unauthenticated") {
       return router.push("/");
     }
-
-    async function fetchNotification() {
-      const notifications = await getNotification();
-
-      setNotifications(notifications);
-    }
-
-    fetchNotification();
   }, [router, status]);
 
   return (

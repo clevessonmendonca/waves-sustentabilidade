@@ -14,6 +14,7 @@ import { Separator } from "@/components/ui/separator";
 import Loading from "../loading";
 import { Schedules } from "./components/schedules";
 import { useRouter } from "next/navigation";
+import { VerifyProfile } from "../actions/verifyProfile";
 
 export default function Dashboard() {
   const userContext = useContext(UserContext);
@@ -28,16 +29,19 @@ export default function Dashboard() {
 
     const { userData } = userContext;
 
+    if (!userData) return router.push("/signin/recycle");
+
     const fetchCollector = async () => {
       try {
-        if (userData) {
-          const fetchedCollector = await getCollector(userData.id);
+        const verified = await VerifyProfile(userData!.userId);
+        if (!verified) return router.push("/signin/recycle");
 
-          if (fetchedCollector) {
-            setCollector(fetchedCollector);
-          } else {
-            console.error("Collector not found.");
-          }
+        const fetchedCollector = await getCollector(userData!.id);
+
+        if (fetchedCollector) {
+          setCollector(fetchedCollector);
+        } else {
+          console.error("Collector not found.");
         }
       } catch (error) {
         console.error("Error fetching collector:", error);
@@ -45,7 +49,7 @@ export default function Dashboard() {
     };
 
     fetchCollector();
-  }, [userContext, router]);
+  }, [router, userContext]);
 
   if (!userContext) {
     return <Loading />;

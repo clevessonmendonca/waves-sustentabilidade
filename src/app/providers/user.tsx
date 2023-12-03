@@ -32,12 +32,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     console.error("Error:", error);
   }
 
-  console.log(userData?.recycler, loading);
 
-  if (!loading && session) {
-    if (!userData?.recycler || userData?.recycler?.length === 0)
-      router.push("/signin/recycle");
-  }
 
   return (
     <UserContext.Provider value={{ userData, loading, error }}>

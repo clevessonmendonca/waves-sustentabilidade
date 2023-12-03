@@ -17,7 +17,7 @@ export default function DashboardSignin() {
 
       const verified = await VerifyProfile(session.user.id);
       if (!verified) return;
-console.log(verified)
+
       router.push(`/dashboard`);
     }
 

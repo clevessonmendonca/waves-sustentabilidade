@@ -13,7 +13,7 @@ export async function VerifyProfile(userId: string): Promise<any> {
       });
 
       person?.recycler && person?.recycler?.length <= 0 && resolve(null);
-
+console.log(person)
       resolve(person);
     } catch (error) {
       reject(error);
