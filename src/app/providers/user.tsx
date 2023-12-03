@@ -26,10 +26,16 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   const router = useRouter();
 
   useEffect(() => {
+    if (session && loading) {
+      <Loading />;
+      return ;
+    }
     if (session && !loading && !data) {
       return router.push("/signin/recycle");
     }
-  }, [data]);
+
+    router.refresh();
+  }, [data, loading, router, session]);
 
   if (loading) {
     return <Loading />;

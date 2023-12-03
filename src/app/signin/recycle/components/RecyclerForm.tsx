@@ -12,7 +12,7 @@ import {
 import { FormField } from "@/components/ui/form-field";
 import { createRecycler } from "@/app/actions/createRecycler";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
 import { CalendarIcon, LoaderIcon } from "lucide-react";

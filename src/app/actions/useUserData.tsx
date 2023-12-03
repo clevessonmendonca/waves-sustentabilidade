@@ -13,7 +13,6 @@ export function useUserData(userId: string) {
     const fetchData = async () => {
       try {
         const user = await getUser(userId);
-        console.log(user)
         setUserData(user as Person | null);
         setError(null);
       } catch (error) {

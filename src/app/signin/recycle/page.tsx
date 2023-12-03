@@ -6,12 +6,10 @@ import { useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
 import { VerifyProfile } from "../../actions/verifyProfile";
 import { useRouter } from "next/navigation";
-import { useUserData } from "@/app/actions/useUserData";
 
 export default function DashboardSignin() {
   const { data: session, status } = useSession();
   const router = useRouter();
-
 
   useEffect(() => {
     async function getUser() {
@@ -23,7 +21,7 @@ export default function DashboardSignin() {
       router.push(`/dashboard`);
     }
 
-      getUser();
+    getUser();
   });
 
   if (status === "unauthenticated") return router.push(`/`);

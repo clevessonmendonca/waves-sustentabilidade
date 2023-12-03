@@ -33,11 +33,10 @@ import {
   Sheet,
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
-import { Notification } from "@prisma/client";
 import { NotificationList } from "./notification-list";
 
 export const handleLoginClick = async () => {
-  await signIn("google", { callbackUrl: "/signin/recycle", redirect: true });
+  await signIn("google", { callbackUrl: "/signin", redirect: true });
 };
 
 export const handleLogoutClick = async () => {
