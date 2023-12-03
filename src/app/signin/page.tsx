@@ -12,7 +12,7 @@ export default function Signin() {
   const router = useRouter();
 
   useEffect(() => {
-    if (userData?.userData) return router.push("/dashboard");
+    if (userData?.data) return router.push("/dashboard");
   });
 
   return (

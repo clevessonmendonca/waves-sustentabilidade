@@ -29,19 +29,22 @@ export default function Dashboard() {
 
     const { userData } = userContext;
 
-    if (!userData) return router.push("/signin/recycle");
-
     const fetchCollector = async () => {
       try {
-        const verified = await VerifyProfile(userData!.userId);
-        if (!verified) return router.push("/signin/recycle");
+        if (userData) {
+          const verified = await VerifyProfile(userData.userId);
+          if (!verified) {
+            console.error("Profile not verified.");
+            return router.push("/signin/recycle");
+          }
 
-        const fetchedCollector = await getCollector(userData!.id);
+          const fetchedCollector = await getCollector(userData.id);
 
-        if (fetchedCollector) {
-          setCollector(fetchedCollector);
-        } else {
-          console.error("Collector not found.");
+          if (fetchedCollector) {
+            setCollector(fetchedCollector);
+          } else {
+            console.error("Collector not found.");
+          }
         }
       } catch (error) {
         console.error("Error fetching collector:", error);
