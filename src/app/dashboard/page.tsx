@@ -52,7 +52,7 @@ export default function Dashboard() {
     };
 
     fetchCollector();
-  }, [router, userContext]);
+  }, []);
 
   if (!userContext) {
     return <Loading />;

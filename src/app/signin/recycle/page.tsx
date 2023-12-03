@@ -6,10 +6,12 @@ import { useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
 import { VerifyProfile } from "../../actions/verifyProfile";
 import { useRouter } from "next/navigation";
+import { useUserData } from "@/app/actions/useUserData";
 
 export default function DashboardSignin() {
   const { data: session, status } = useSession();
   const router = useRouter();
+
 
   useEffect(() => {
     async function getUser() {
@@ -21,7 +23,7 @@ export default function DashboardSignin() {
       router.push(`/dashboard`);
     }
 
-    getUser();
+      getUser();
   });
 
   if (status === "unauthenticated") return router.push(`/`);
@@ -33,7 +35,7 @@ export default function DashboardSignin() {
           Bem-vindo <span className="text-primary">{session?.user?.name}</span>
         </h2>
         <p className="text-sm opacity-75">
-          Por favor, preencha o formulario para finalizar o cadastro.
+          Por favor, preencha o formulário para finalizar o cadastro.
         </p>
       </div>
 

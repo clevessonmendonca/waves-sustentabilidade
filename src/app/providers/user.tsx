@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { createContext, ReactNode, useEffect } from "react";
 import { useSession } from "next-auth/react";
@@ -26,17 +26,11 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   const router = useRouter();
 
   useEffect(() => {
-    if (!session && (error || !data)) {
-      router.push("/signin/recycle");
+    if (session && !loading && !data) {
+      return router.push("/signin/recycle");
     }
-  }, [session, error, data, router]);
+  }, [data]);
 
-  useEffect(() => {
-    if (session) {
-      update();
-    }
-  }, []);
-console.log(loading)
   if (loading) {
     return <Loading />;
   }
@@ -50,4 +44,4 @@ console.log(loading)
       {children}
     </UserContext.Provider>
   );
-}
+};

@@ -13,7 +13,9 @@ export function useUserData(userId: string) {
     const fetchData = async () => {
       try {
         const user = await getUser(userId);
+        console.log(user)
         setUserData(user as Person | null);
+        setError(null);
       } catch (error) {
         console.error("Error fetching user data:", error);
         setError("Error fetching user data");
@@ -23,7 +25,7 @@ export function useUserData(userId: string) {
     };
 
     fetchData();
-  }, [userId]);
+  });
 
   return {
     data: userData,
@@ -34,6 +36,7 @@ export function useUserData(userId: string) {
         setLoading(true);
         const user = await getUser(userId);
         setUserData(user as Person | null);
+        setError(null);
       } catch (error) {
         console.error("Error updating user data:", error);
         setError("Error updating user data");
