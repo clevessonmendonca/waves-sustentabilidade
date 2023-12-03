@@ -6,12 +6,15 @@ import Image from "next/image";
 import React, { useContext, useEffect } from "react";
 import { UserContext } from "../providers/user";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function Signin() {
   const userData = useContext(UserContext);
+  const { data: session } = useSession();
   const router = useRouter();
 
   useEffect(() => {
+    if (session?.user) return router.push("/signin/recycle");
     if (userData?.userData) return router.push("/dashboard");
   });
 
