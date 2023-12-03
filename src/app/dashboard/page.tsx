@@ -51,10 +51,6 @@ export default function Dashboard() {
     return <Loading />;
   }
 
-  if (!userContext.userData || userContext?.userData?.recycler?.length === 0) {
-    return router.push("/signin/recycle");
-  }
-
   return (
     <div>
       <GreetingAndStats collector={collector} />
