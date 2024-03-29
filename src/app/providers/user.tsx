@@ -25,17 +25,17 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   const { data, loading, error, update } = useUserData(session?.user?.id || "");
   const router = useRouter();
 
-  useEffect(() => {
-    if (session && loading) {
-      <Loading />;
-      return ;
-    }
-    if (session && !loading && !data) {
-      return router.push("/signin/recycle");
-    }
+  // useEffect(() => {
+  //   if (session && loading) {
+  //     <Loading />;
+  //     return ;
+  //   }
+  //   if (session && !loading && !data) {
+  //     return router.push("/signin/recycle");
+  //   }
 
-    router.refresh();
-  }, [data, loading, router, session]);
+  //   router.refresh();
+  // }, [data, loading, router, session]);
 
   if (loading) {
     return <Loading />;
